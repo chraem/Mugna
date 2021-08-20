@@ -30,21 +30,42 @@ class MainWindow(QMainWindow):
 
     def add_data(self):
         company_name = self.company_name_LE.text()
-        id = self.id_emp_LE.text()
-        fn = self.fn_emp_LE.text()
-        mn = self.mn_emp_LE.text()
-        ln = self.ln_emp_LE.text()
+        
 
-        day_rate = self.day_rate_LE.text()
-        night_rate = self.night_rate_LE.text()
-        ot_rate = self.ot_rate_LE.text()
-        allowance_rate = self.allowance_rate_LE.text()
+        employee_data ={
+                "id": self.id_emp_LE.text(),
+                "fn": self.fn_emp_LE.text(),
+                "mn": self.mn_emp_LE.text(),
+                "ln": self.ln_emp_LE.text(),
 
-        day_worked = self.day_worked_LE.text()
-        night_worked = self.night_worked_LE.text()
-        ot_hours = self.ot_hours_LE.text()
-        late_hours = self.late_hours_LE.text()
+                "day_rate": self.day_rate_LE.text(),
+                "night_rate": self.night_rate_LE.text(),
+                "ot_rate" :self.ot_rate_LE.text(),
+                "allowance_rate": self.allowance_rate_LE.text(),
 
+                "day_worked": self.day_worked_LE.text(),
+                "night_worked": self.night_worked_LE.text(),
+                "ot_hours": self.ot_hours_LE.text(),
+                "late_hours": self.late_hours_LE.text(),
+        }
+
+        if (c.execute("""
+                        INSERT INTO employees(
+                            id,
+                            fn, mn, ln,
+                            day_rate, night_rate, ot_rate, allowance_rate,
+                            day_worked, night_worked, ot_hours, late_hours
+                        )
+                        VALUES(
+                                :id,
+                                :fn, :mn, :ln,
+                                :day_rate, :night_rate, :ot_rate, :allowance_rate,
+                                :day_worked, :night_worked, :ot_hours, :late_hours
+                              )
+                      """, employee_data)
+            ):
+            conn.commit()
+            print("committed")
 
 # Global Functions
 def validate(line_edit: str, data_type: str):
