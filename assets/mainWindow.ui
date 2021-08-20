@@ -17,6 +17,9 @@
    <iconset resource="images/main_images.qrc">
     <normaloff>:/images/cat.png</normaloff>:/images/cat.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(232, 240, 242);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
@@ -56,16 +59,16 @@
         <number>5</number>
        </property>
        <property name="leftMargin">
-        <number>5</number>
+        <number>20</number>
        </property>
        <property name="topMargin">
-        <number>5</number>
+        <number>20</number>
        </property>
        <property name="rightMargin">
         <number>5</number>
        </property>
        <property name="bottomMargin">
-        <number>5</number>
+        <number>20</number>
        </property>
        <item>
         <widget class="QFrame" name="frame_5">
@@ -1557,12 +1560,15 @@ font: bold 25pt &quot;assets/font/monda.ttf&quot;;</string>
          <property name="text">
           <string>CALCULATOR</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="cache_calc_BTN">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -1736,19 +1742,6 @@ QPushButton:hover{
                 <bool>true</bool>
                </property>
               </widget>
-             </item>
-             <item row="5" column="2">
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
              </item>
              <item row="4" column="2">
               <widget class="QPushButton" name="decimal_calc_BTN">
@@ -2470,6 +2463,19 @@ QPushButton:hover{
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
