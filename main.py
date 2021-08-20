@@ -46,6 +46,7 @@ class MainWindow(QMainWindow):
         late_hours = self.late_hours_LE.text()
 
 
+# Global Functions
 def validate(line_edit: str, data_type: str):
     # Prevents the user from inputting data types that are not specified
     if data_type == "int":
@@ -53,7 +54,15 @@ def validate(line_edit: str, data_type: str):
     elif data_type == "float":
         line_edit.setValidator(QDoubleValidator(decimals=2))
 
+def close_db():
+    # Close database when called
+    conn.close()
 
+conn = sqlite3.connect("database/stub.sqlite")
+c = conn.cursor()
+
+# App initialization
 app = QApplication(sys.argv)
+app.aboutToQuit.connect(close_db)
 mainWindow = MainWindow()
 sys.exit(app.exec_())
