@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget
 from PyQt5.uic import loadUi
 
-import sys
-import main_images_rc
+import sys, main_images_rc, sqlite3
 
 class MainWindow(QMainWindow):
     def  __init__(self):
