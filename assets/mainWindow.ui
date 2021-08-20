@@ -508,8 +508,7 @@ padding: 2px;</string>
                <widget class="QLabel" name="label_6">
                 <property name="styleSheet">
                  <string notr="true">color:  rgb(0,0,0);
-font: 11pt &quot;asstes/font/monda.ttf&quot;;
-padding-right: 2px;</string>
+font: 11pt &quot;asstes/font/monda.ttf&quot;;</string>
                 </property>
                 <property name="text">
                  <string>Prepared By:</string>
@@ -598,7 +597,7 @@ padding-right: 2px;</string>
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_2">
-                    <item row="2" column="3">
+                    <item row="1" column="3">
                      <widget class="QLineEdit" name="night_worked_LE">
                       <property name="styleSheet">
                        <string notr="true">border: none;
@@ -627,7 +626,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Day Rate</string>
+                       <string>Daily Rate</string>
                       </property>
                      </widget>
                     </item>
@@ -647,7 +646,7 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="5">
+                    <item row="1" column="5">
                      <widget class="QLineEdit" name="total_night_pay_emp_LE">
                       <property name="styleSheet">
                        <string notr="true">border: none;
@@ -709,23 +708,13 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="4">
+                    <item row="1" column="4">
                      <widget class="QLabel" name="label_21">
                       <property name="styleSheet">
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
                        <string>Total Night Pay</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="0">
-                     <widget class="QLabel" name="label_16">
-                      <property name="styleSheet">
-                       <string notr="true">border: none;</string>
-                      </property>
-                      <property name="text">
-                       <string>Allowance Rate</string>
                       </property>
                      </widget>
                     </item>
@@ -745,20 +734,7 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="3">
-                     <widget class="QLineEdit" name="late_hours_LE">
-                      <property name="styleSheet">
-                       <string notr="true">border: none;
-border-bottom: 1px solid rgb(0,0,0);
-background-color: rgba(5, 55, 66, 50);
-padding: 2px;</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>00.0</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="2">
+                    <item row="1" column="2">
                      <widget class="QLabel" name="label_39">
                       <property name="styleSheet">
                        <string notr="true">border: none;</string>
@@ -784,7 +760,7 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="1">
+                    <item row="1" column="1">
                      <widget class="QLineEdit" name="night_rate_LE">
                       <property name="styleSheet">
                        <string notr="true">border: none;
@@ -810,8 +786,28 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="1">
-                     <widget class="QLineEdit" name="allowance_rate_LE">
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label_14">
+                      <property name="styleSheet">
+                       <string notr="true">border: none;</string>
+                      </property>
+                      <property name="text">
+                       <string>Night Shift Rate</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="label_16">
+                      <property name="styleSheet">
+                       <string notr="true">border: none;</string>
+                      </property>
+                      <property name="text">
+                       <string>Hoilday Rate</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QLineEdit" name="holiday_rate_LE">
                       <property name="styleSheet">
                        <string notr="true">border: none;
 border-bottom: 1px solid rgb(0,0,0);
@@ -836,26 +832,6 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="2">
-                     <widget class="QLabel" name="label_41">
-                      <property name="styleSheet">
-                       <string notr="true">border: none;</string>
-                      </property>
-                      <property name="text">
-                       <string>Late Hours</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_14">
-                      <property name="styleSheet">
-                       <string notr="true">border: none;</string>
-                      </property>
-                      <property name="text">
-                       <string>Night Rate</string>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="3" column="5">
                      <widget class="QLineEdit" name="total_ot_pay_emp_LE">
                       <property name="styleSheet">
@@ -872,8 +848,18 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="5">
-                     <widget class="QLineEdit" name="total_allowance_emp_LE">
+                    <item row="2" column="4">
+                     <widget class="QLabel" name="label_23">
+                      <property name="styleSheet">
+                       <string notr="true">border: none;</string>
+                      </property>
+                      <property name="text">
+                       <string>Total Holiday Pay</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="5">
+                     <widget class="QLineEdit" name="total_holiday_pay_emp_LE">
                       <property name="styleSheet">
                        <string notr="true">border: none;
 border-bottom: 1px solid rgb(0,0,0);
@@ -888,13 +874,29 @@ padding: 2px;</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="4">
-                     <widget class="QLabel" name="label_23">
+                    <item row="2" column="2">
+                     <widget class="QLabel" name="label_19">
                       <property name="styleSheet">
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Total Allowance</string>
+                       <string>Hoilday Worked</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="3">
+                     <widget class="QLineEdit" name="holiday_worked_LE">
+                      <property name="styleSheet">
+                       <string notr="true">border: none;
+border-bottom: 1px solid rgb(0,0,0);
+background-color: rgba(5, 55, 66, 50);
+padding: 2px;</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                      </property>
+                      <property name="placeholderText">
+                       <string>0000.0</string>
                       </property>
                      </widget>
                     </item>
@@ -1168,6 +1170,9 @@ QPushButton:hover{
                       <property name="sortingEnabled">
                        <bool>true</bool>
                       </property>
+                      <attribute name="horizontalHeaderStretchLastSection">
+                       <bool>true</bool>
+                      </attribute>
                       <attribute name="verticalHeaderVisible">
                        <bool>false</bool>
                       </attribute>
@@ -1188,19 +1193,6 @@ QPushButton:hover{
                  </item>
                  <item>
                   <spacer name="verticalSpacer_13">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_15">
                    <property name="orientation">
                     <enum>Qt::Vertical</enum>
                    </property>
@@ -1246,21 +1238,6 @@ QPushButton:hover{
            </item>
           </layout>
          </widget>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(5, 55, 66);
-font: bold 12pt &quot;assets/font/monda.ttf&quot;;
-padding: 2px;</string>
-         </property>
-         <property name="text">
-          <string>0/0</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
         </widget>
        </item>
        <item>
