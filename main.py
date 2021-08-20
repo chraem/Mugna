@@ -22,7 +22,6 @@ class MainWindow(QMainWindow):
         validate(self.ot_hours_LE, "float")
         validate(self.holiday_worked_LE, "float")
 
-
         self.add_emp_BTN.clicked.connect(self.add_data)
         self.add_deduction_BTN.clicked.connect(self.add_row)
         self.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
@@ -31,55 +30,68 @@ class MainWindow(QMainWindow):
 
 
     def add_data(self):
-        deductions = {}
+        deductions_DICT = {}
 
-        try:
-            company_name = self.company_name_LE.text()
-            employee_data ={
-                        "id": self.id_emp_LE.text(),
-                        "fn": self.fn_emp_LE.text(),
-                        "mn": self.mn_emp_LE.text(),
-                        "ln": self.ln_emp_LE.text(),
+        #try:
+        company_name = self.company_name_LE.text()
 
-                        "day_rate": self.day_rate_LE.text(),
-                        "night_rate": self.night_rate_LE.text(),
-                        "holiday_rate": self.holiday_rate_LE.text(),
-                        "ot_rate" :self.ot_rate_LE.text(),
+        employee_data ={
+            "id": self.id_emp_LE.text(),
+
+            "fn": self.fn_emp_LE.text(),
+            "mn": self.mn_emp_LE.text(),
+            "ln": self.ln_emp_LE.text(),
+
+            "day_rate": self.day_rate_LE.text(),
+            "night_rate": self.night_rate_LE.text(),
+            "holiday_rate": self.holiday_rate_LE.text(),
+            "ot_rate" :self.ot_rate_LE.text(),
                         
-                        "day_worked": self.day_worked_LE.text(),
-                        "night_worked": self.night_worked_LE.text(),
-                        "holiday_worked": self.holiday_worked_LE.text(),
-                        "ot_hours": self.ot_hours_LE.text(),
-                }
+            "day_worked": self.day_worked_LE.text(),
+            "night_worked": self.night_worked_LE.text(),
+            "holiday_worked": self.holiday_worked_LE.text(),
+            "ot_hours": self.ot_hours_LE.text(),
+            }
 
-            for row in range(self.deductions_TBL.rowCount()):
-                for col in range(self.deductions_TBL.columnCount()):
-                    deduction = self.deductions_TBL.item(row, 0).text()
-                    amount = self.deductions_TBL.item(row, 1).text()
-                    deductions[deduction] = amount
-                
+        # Gets the input from table widget
+        for row in range(self.deductions_TBL.rowCount()):
+            for col in range(self.deductions_TBL.columnCount()):
+                deduction = self.deductions_TBL.item(row, 0).text()
+                amount = self.deductions_TBL.item(row, 1).text()
+                deductions_DICT[deduction] = amount
 
-            if (c.execute("""
-                                INSERT INTO employees(
-                                    id,
-                                    fn, mn, ln,
-                                    day_rate, night_rate, holiday_rate, ot_rate, 
-                                    day_worked, night_worked, holiday_worked, ot_hours
-                                )
-                                VALUES(
-                                        :id,
-                                        :fn, :mn, :ln,
-                                        :day_rate, :night_rate, :ot_rate, :holiday_rate,
-                                        :day_worked, :night_worked, :ot_hours, :holiday_worked
-                                      )
-                              """, employee_data)
-            ):
-                conn.commit()
-        except:
-            if self.id_emp_LE.text() == "":
-                show_pop_up("ID field cannot be empty!")
-            else:
-                show_pop_up("Failed to commit the values into database!")
+        if (c.execute("""
+                        INSERT INTO employees(
+                            id,
+                            fn, mn, ln,
+                            day_rate, night_rate, holiday_rate, ot_rate, 
+                            day_worked, night_worked, holiday_worked, ot_hours)
+                        VALUES(
+                            :id,
+                            :fn, :mn, :ln,
+                            :day_rate, :night_rate, :holiday_rate, :ot_rate, 
+                            :day_worked, :night_worked, :holiday_worked, :ot_hours
+                            )
+                     """, employee_data
+        )):
+            conn.commit()
+
+        for deduction in deductions_DICT:
+            if(c.execute("""
+                            INSERT INTO deductions(id, deduction, amount)
+                            VALUES(?, ?, ?)
+                         """, (employee_data["id"], deduction, deductions_DICT[deduction],)
+                )):
+                    conn.commit()
+        
+        # except:
+        #     c.execute("SELECT id FROM employees WHERE id = :id LIMIT 1", employee_data)
+        #     if (c.fetchone()):
+        #         show_pop_up("ID: "+employee_data["id"]+" already exists!")
+        #     elif self.id_emp_LE.text() == "":
+        #         show_pop_up("ID field cannot be empty!")
+        #     else:
+        #         show_pop_up("Failed to commit the values into database!")
 
     def add_row(self):
         self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
@@ -88,7 +100,7 @@ class MainWindow(QMainWindow):
         # Removes the selected row
         self.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
         
-
+        
 # Global Functions
 def validate(line_edit: str, data_type: str):
     # Prevents the user from inputting data types that are not specified
@@ -117,3 +129,8 @@ app = QApplication(sys.argv)
 app.aboutToQuit.connect(close_db)
 mainWindow = MainWindow()
 sys.exit(app.exec_())
+
+
+# NOTES
+# Comment out try catch if okay na ung validator for table column
+# Add String validator
