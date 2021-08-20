@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
 from PyQt5.uic import loadUi
 
@@ -31,9 +31,8 @@ class MainWindow(QMainWindow):
     def add_data(self):
         company_name = self.company_name_LE.text()
         
-
         employee_data ={
-                "id": self.id_emp_LE.text(),
+                "id": self.id_emp_LE.text() if self.id_emp_LE.text() != "" else show_pop_up("ID field cannot be empty!"),
                 "fn": self.fn_emp_LE.text(),
                 "mn": self.mn_emp_LE.text(),
                 "ln": self.ln_emp_LE.text(),
@@ -65,7 +64,9 @@ class MainWindow(QMainWindow):
                       """, employee_data)
             ):
             conn.commit()
-            print("committed")
+        else:
+            show_pop_up("Failed to commit the values into database!")
+
 
 # Global Functions
 def validate(line_edit: str, data_type: str):
@@ -74,6 +75,14 @@ def validate(line_edit: str, data_type: str):
         line_edit.setValidator(QIntValidator())
     elif data_type == "float":
         line_edit.setValidator(QDoubleValidator(decimals=2))
+
+def show_pop_up(message: str):
+    pop_up = QMessageBox()
+    pop_up.setWindowTitle("Warning")
+    pop_up.setText(message)
+    pop_up.setIcon(QMessageBox.Warning)
+    pop_up.setStandardButtons(QMessageBox.Ok)
+    pop_up.exec_()
 
 def close_db():
     # Close database when called
