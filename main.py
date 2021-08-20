@@ -15,15 +15,17 @@ class MainWindow(QMainWindow):
         validate(self.day_rate_LE, "float")
         validate(self.night_rate_LE, "float")
         validate(self.ot_rate_LE, "float")
-        validate(self.allowance_rate_LE, "float")
+        validate(self.holiday_rate_LE, "float")
 
         validate(self.day_worked_LE, "float")
         validate(self.night_worked_LE, "float")
         validate(self.ot_hours_LE, "float")
-        validate(self.late_hours_LE, "float")
+        validate(self.holiday_worked_LE, "float")
 
 
         self.add_emp_BTN.clicked.connect(self.add_data)
+        self.add_deduction_BTN.clicked.connect(self.add_row)
+        self.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
 
         self.show()
 
@@ -40,7 +42,7 @@ class MainWindow(QMainWindow):
                 "day_rate": self.day_rate_LE.text(),
                 "night_rate": self.night_rate_LE.text(),
                 "ot_rate" :self.ot_rate_LE.text(),
-                "allowance_rate": self.allowance_rate_LE.text(),
+                "holiday_rate": self.holiday_rate_LE.text(),
 
                 "day_worked": self.day_worked_LE.text(),
                 "night_worked": self.night_worked_LE.text(),
@@ -52,13 +54,13 @@ class MainWindow(QMainWindow):
                         INSERT INTO employees(
                             id,
                             fn, mn, ln,
-                            day_rate, night_rate, ot_rate, allowance_rate,
+                            day_rate, night_rate, ot_rate, holiday_rate,
                             day_worked, night_worked, ot_hours, late_hours
                         )
                         VALUES(
                                 :id,
                                 :fn, :mn, :ln,
-                                :day_rate, :night_rate, :ot_rate, :allowance_rate,
+                                :day_rate, :night_rate, :ot_rate, :holiday_rate,
                                 :day_worked, :night_worked, :ot_hours, :late_hours
                               )
                       """, employee_data)
@@ -67,6 +69,13 @@ class MainWindow(QMainWindow):
         else:
             show_pop_up("Failed to commit the values into database!")
 
+    def add_row(self):
+        self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
+        
+    def remove_specific_row(self):
+        # Removes the selected row
+        self.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
+        
 
 # Global Functions
 def validate(line_edit: str, data_type: str):
