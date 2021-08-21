@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
+from PyQt5.QtCore import QRegExp
 from PyQt5.uic import loadUi
 
 import sys, main_images_rc, sqlite3
@@ -11,6 +12,8 @@ class MainWindow(QMainWindow):
 
         # Validates the input in line edits
         validate(self.id_emp_LE, "int")
+
+        validate(self.ln_emp_LE, "name")
 
         validate(self.day_rate_LE, "float")
         validate(self.night_rate_LE, "float")
@@ -53,7 +56,7 @@ class MainWindow(QMainWindow):
             "ot_hours": self.ot_hours_LE.text(),
             }
 
-        # Gets the input from table widget
+        # Get the inputs from table widget
         for row in range(self.deductions_TBL.rowCount()):
             for col in range(self.deductions_TBL.columnCount()):
                 deduction = self.deductions_TBL.item(row, 0).text()
@@ -94,13 +97,14 @@ class MainWindow(QMainWindow):
         #         show_pop_up("Failed to commit the values into database!")
 
     def add_row(self):
+        # Add new row
         self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
         
     def remove_specific_row(self):
         # Removes the selected row
         self.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
         
-        
+
 # Global Functions
 def validate(line_edit: str, data_type: str):
     # Prevents the user from inputting data types that are not specified
@@ -108,6 +112,8 @@ def validate(line_edit: str, data_type: str):
         line_edit.setValidator(QIntValidator())
     elif data_type == "float":
         line_edit.setValidator(QDoubleValidator(decimals=2))
+    elif data_type == "name":
+        line_edit.setValidator(QRegExpValidator(QRegExp("[a-zA-Z.\\s]+"), line_edit))
 
 def show_pop_up(message: str):
     pop_up = QMessageBox()
