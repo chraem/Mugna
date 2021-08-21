@@ -13,6 +13,8 @@ class MainWindow(QMainWindow):
         # Validates the input in line edits
         validate(self.id_emp_LE, "int")
 
+        validate(self.fn_emp_LE, "name")
+        validate(self.mn_emp_LE, "name")
         validate(self.ln_emp_LE, "name")
 
         validate(self.day_rate_LE, "float")
@@ -28,6 +30,21 @@ class MainWindow(QMainWindow):
         self.add_emp_BTN.clicked.connect(self.add_data)
         self.add_deduction_BTN.clicked.connect(self.add_row)
         self.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
+
+        self.day_rate_LE.textChanged.connect(self.reload_total_day_pay); 
+        self.night_rate_LE.textChanged.connect(self.reload_total_night_pay); 
+        self.holiday_rate_LE.textChanged.connect(self.reload_total_holiday_pay); 
+        self.ot_rate_LE.textChanged.connect(self.reload_total_ot_pay); 
+
+        self.day_worked_LE.textChanged.connect(self.reload_total_day_pay)
+        self.night_worked_LE.textChanged.connect(self.reload_total_night_pay)
+        self.holiday_worked_LE.textChanged.connect(self.reload_total_holiday_pay)
+        self.ot_hours_LE.textChanged.connect(self.reload_total_ot_pay)
+
+        self.total_day_pay_LE.textChanged.connect(self.reload_gross_pay)
+        self.total_night_pay_LE.textChanged.connect(self.reload_gross_pay)
+        self.total_holiday_pay_LE.textChanged.connect(self.reload_gross_pay)
+        self.total_ot_pay_LE.textChanged.connect(self.reload_gross_pay)
 
         self.show()
 
@@ -97,23 +114,54 @@ class MainWindow(QMainWindow):
         #         show_pop_up("Failed to commit the values into database!")
 
     def add_row(self):
-        # Add new row
         self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
         
     def remove_specific_row(self):
-        # Removes the selected row
         self.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
         
+    def reload_total_day_pay(self):
+        day_rate = float(self.day_rate_LE.text()) if self.day_rate_LE.text() != "" else 0.0
+        day_worked = float(self.day_worked_LE.text()) if self.day_worked_LE.text() != "" else 0.0
+        self.total_day_pay_LE.setText(str(day_rate*day_worked))
+
+    def reload_total_night_pay(self):
+        night_rate = float(self.night_rate_LE.text()) if self.night_rate_LE.text() != "" else 0.0
+        night_worked = float(self.night_worked_LE.text()) if self.night_worked_LE.text() != "" else 0.0
+        self.total_night_pay_LE.setText(str(night_rate*night_worked))
+
+    def reload_total_holiday_pay(self):
+        holiday_rate = float(self.holiday_rate_LE.text()) if self.holiday_rate_LE.text() != "" else 0.0
+        holiday_worked = float(self.holiday_worked_LE.text()) if self.holiday_worked_LE.text() != "" else 0.0
+        self.total_holiday_pay_LE.setText(str(holiday_rate*holiday_worked))
+
+    def reload_total_ot_pay(self):
+        ot_rate = float(self.ot_rate_LE.text()) if self.ot_rate_LE.text() != "" else 0.0
+        ot_worked = float(self.ot_hours_LE.text()) if self.ot_hours_LE.text() != "" else 0.0
+        self.total_ot_pay_LE.setText(str(ot_rate*ot_worked))
+
+    def reload_gross_pay(self):
+        gross_pay = (
+                      (float(self.total_day_pay_LE.text())     if self.total_day_pay_LE.text() != "" else 0.0)
+                    + (float(self.total_night_pay_LE.text())   if self.total_night_pay_LE.text() != "" else 0.0)
+                    + (float(self.total_holiday_pay_LE.text()) if self.total_holiday_pay_LE.text() != "" else 0.0)
+                    + (float(self.total_ot_pay_LE.text())      if self.total_ot_pay_LE.text() != "" else 0.0)
+                    ) 
+        self.gross_pay_LE.setText(str(gross_pay))
+
+    def total_deduction(self):
+        pass
+
+    def reload_net_pay(self):
+        pass
 
 # Global Functions
 def validate(line_edit: str, data_type: str):
-    # Prevents the user from inputting data types that are not specified
     if data_type == "int":
         line_edit.setValidator(QIntValidator())
     elif data_type == "float":
         line_edit.setValidator(QDoubleValidator(decimals=2))
     elif data_type == "name":
-        line_edit.setValidator(QRegExpValidator(QRegExp("[a-zA-Z.\\s]+"), line_edit))
+        line_edit.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.]+"), line_edit))
 
 def show_pop_up(message: str):
     pop_up = QMessageBox()
@@ -124,7 +172,6 @@ def show_pop_up(message: str):
     pop_up.exec_()
 
 def close_db():
-    # Close database when called
     conn.close()
 
 conn = sqlite3.connect("database/stub.sqlite")
