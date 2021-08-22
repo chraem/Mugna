@@ -116,7 +116,7 @@ font: bold 20pt &quot;assets/font/monda.ttf&quot;;</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="new_emp_BTN">
+           <widget class="QPushButton" name="new_BTN">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -154,7 +154,7 @@ QPushButton:hover{
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="add_emp_BTN">
+           <widget class="QPushButton" name="add_BTN">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -185,6 +185,44 @@ QPushButton:hover{
             </property>
             <property name="text">
              <string>ADD</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="report_BTN">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+	background-color: rgb(5, 55, 66);
+	border-radius: 5px;
+	color: rgb(255, 255, 255);
+	font: bold 12pt &quot;assets/font/monda.ttf&quot;;
+	padding: 2px;
+}
+
+QPushButton:hover{
+	background-color:rgb(57, 162, 219) ;
+}</string>
+            </property>
+            <property name="text">
+             <string>REPORT</string>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -303,7 +341,7 @@ font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
         </spacer>
        </item>
        <item>
-        <widget class="QStackedWidget" name="emp_Info">
+        <widget class="QStackedWidget" name="emp_SW">
          <property name="styleSheet">
           <string notr="true">font: 11pt &quot;asstes/font/monda.ttf&quot; rgb(0,0,0);
 border: 1px solid rgb(0,0,0);</string>
@@ -1281,9 +1319,6 @@ QPushButton:hover{
          </widget>
          <widget class="QWidget" name="summary_SWP">
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="1" column="0">
-            <widget class="QTableView" name="tableView"/>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_4">
              <property name="sizePolicy">
@@ -1300,6 +1335,123 @@ border: none;</string>
              <property name="text">
               <string>SUMMARY REPORT</string>
              </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QTableWidget" name="report_TBL">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255,255,255);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>ID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>First Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Middle Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Last Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Day Rate</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Night Rate</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Holiday Rate</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>OT Rate</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Day Worked</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Night Worked</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Holiday Worked</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>OT Hours</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Total Day Pay</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Total Night Pay</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Total Holiday Pay</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Total OT Pay</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Gross Pay</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Total Deduction</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Net Pay</string>
+              </property>
+             </column>
             </widget>
            </item>
           </layout>
