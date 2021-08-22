@@ -347,7 +347,7 @@ font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
 border: 1px solid rgb(0,0,0);</string>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="input_SWP">
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -522,7 +522,7 @@ padding: 2px;</string>
                </widget>
               </item>
               <item row="6" column="4">
-               <widget class="QLineEdit" name="net_pay_emp_LE">
+               <widget class="QLineEdit" name="net_pay_LE">
                 <property name="styleSheet">
                  <string notr="true">border: none;
 border-bottom: 1px solid rgb(0,0,0);
@@ -1347,6 +1347,12 @@ border: none;</string>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
+             </property>
+             <property name="verticalScrollMode">
+              <enum>QAbstractItemView::ScrollPerPixel</enum>
+             </property>
+             <property name="horizontalScrollMode">
+              <enum>QAbstractItemView::ScrollPerPixel</enum>
              </property>
              <property name="sortingEnabled">
               <bool>true</bool>
