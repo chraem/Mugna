@@ -5,27 +5,20 @@ from PyQt5.uic import loadUi
 
 import sys, main_images_rc, sqlite3
 
+deductions_DICT = {}
+
 class MainWindow(QMainWindow):
     def  __init__(self):
         super(MainWindow, self).__init__()
         loadUi("assets/mainWindow.ui", self)
-
-        # Validates the input in line edits
+    
         validate(self.id_emp_LE, "int")
+        validate(self.fn_emp_LE, "name"); validate(self.mn_emp_LE, "name"); validate(self.ln_emp_LE, "name")
+        validate(self.day_rate_LE, "float"); validate(self.night_rate_LE, "float"); 
+        validate(self.ot_rate_LE, "float"); validate(self.holiday_rate_LE, "float")
 
-        validate(self.fn_emp_LE, "name")
-        validate(self.mn_emp_LE, "name")
-        validate(self.ln_emp_LE, "name")
-
-        validate(self.day_rate_LE, "float")
-        validate(self.night_rate_LE, "float")
-        validate(self.ot_rate_LE, "float")
-        validate(self.holiday_rate_LE, "float")
-
-        validate(self.day_worked_LE, "float")
-        validate(self.night_worked_LE, "float")
-        validate(self.ot_hours_LE, "float")
-        validate(self.holiday_worked_LE, "float")
+        validate(self.day_worked_LE, "float"); validate(self.night_worked_LE, "float")
+        validate(self.ot_hours_LE, "float"); validate(self.holiday_worked_LE, "float")
 
         self.add_emp_BTN.clicked.connect(self.add_data)
         self.add_deduction_BTN.clicked.connect(self.add_row)
@@ -46,12 +39,17 @@ class MainWindow(QMainWindow):
         self.total_holiday_pay_LE.textChanged.connect(self.reload_gross_pay)
         self.total_ot_pay_LE.textChanged.connect(self.reload_gross_pay)
 
+        self.gross_pay_LE.textChanged.connect(self.reload_net_pay)
+        self.total_deduction_LE.textChanged.connect(self.reload_net_pay)
+        self.deductions_TBL.itemChanged.connect(self.reload_total_deduction)
+
+
         self.show()
 
 
     def add_data(self):
-        deductions_DICT = {}
-
+        global deductions_DICT
+        
         #try:
         company_name = self.company_name_LE.text()
 
@@ -75,10 +73,9 @@ class MainWindow(QMainWindow):
 
         # Get the inputs from table widget
         for row in range(self.deductions_TBL.rowCount()):
-            for col in range(self.deductions_TBL.columnCount()):
-                deduction = self.deductions_TBL.item(row, 0).text()
-                amount = self.deductions_TBL.item(row, 1).text()
-                deductions_DICT[deduction] = amount
+            deduction = self.deductions_TBL.item(row, 0).text()
+            amount = self.deductions_TBL.item(row, 1).text()
+            deductions_DICT[deduction] = amount
 
         if (c.execute("""
                         INSERT INTO employees(
@@ -148,11 +145,28 @@ class MainWindow(QMainWindow):
                     ) 
         self.gross_pay_LE.setText(str(gross_pay))
 
-    def total_deduction(self):
-        pass
+    def reload_total_deduction(self):
+        global deductions_DICT
+        num_of_row, deductions = self.deductions_TBL.rowCount(), 0.0
+        
+        for row in range(num_of_row):
+            pre_deduction = self.deductions_TBL.item(row, 0)
+            pre_amount = self.deductions_TBL.item(row, 1)
+        
+            deduction = self.deductions_TBL.item(row, 0).text() if pre_deduction != None and pre_deduction.text() != "" else "LeftEmpty"+str(row)
+            amount =  self.deductions_TBL.item(row, 1).text() if pre_amount != None and pre_amount.text() else 0.0
+            
+            deductions_DICT[deduction] = amount 
+            deductions += float(deductions_DICT[deduction])
+        
+        self.total_deduction_LE.setText(str(deductions))
 
     def reload_net_pay(self):
-        pass
+        self.net_pay_emp_LE.setText(str(
+            (float(self.gross_pay_LE.text()) if self.gross_pay_LE.text() != "" else 0.0) 
+            -(float(self.total_deduction_LE.text()) if self.total_deduction_LE.text() != "" else 0.0)
+            ))
+                
 
 # Global Functions
 def validate(line_edit: str, data_type: str):
@@ -186,4 +200,3 @@ sys.exit(app.exec_())
 
 # NOTES
 # Comment out try catch if okay na ung validator for table column
-# Add String validator
