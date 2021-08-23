@@ -3,7 +3,9 @@ from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
 from PyQt5.QtCore import QRegExp, QSize
 from PyQt5.uic import loadUi
 
-import sys, main_images_rc, sqlite3, os, subprocess
+from openpyxl import Workbook, load_workbook
+
+import sys, main_images_rc, sqlite3, os, subprocess, datetime
 
 deductions_DICT, visible = {}, False
 
@@ -16,6 +18,7 @@ class MainWindow(QMainWindow):
         validate(self.fn_emp_LE, "name"); validate(self.mn_emp_LE, "name"); validate(self.ln_emp_LE, "name")
         validate(self.day_rate_LE, "float"); validate(self.night_rate_LE, "float"); 
         validate(self.ot_rate_LE, "float"); validate(self.holiday_rate_LE, "float")
+        validate(self.prepared_by_LE, "name")
 
         validate(self.day_worked_LE, "float"); validate(self.night_worked_LE, "float")
         validate(self.ot_hours_LE, "float"); validate(self.holiday_worked_LE, "float")
@@ -75,8 +78,6 @@ class MainWindow(QMainWindow):
         global deductions_DICT
         
         try:
-            company_name = self.company_name_LE.text()
-
             employee_data ={
                 "id": self.id_emp_LE.text(),
 
@@ -250,11 +251,22 @@ class MainWindow(QMainWindow):
             ))
 
     def export_data(self):
+        date_and_time = datetime.datetime.now().strftime("%m-%d-%Y(%I:%M:%S%p)")
+        company_name = self.company_name_LE.text()
+        prepared_by = self.prepared_by_LE.text()
+
+        workbook = load_workbook(os.getcwd()+"\\exports\\basis.xlsx")
+        worksheet = workbook.active
+
         if (c.execute("SELECT * FROM employees")):
             emps = c.fetchall()
             
             for emp_id, emp_wid_data in enumerate(emps):
-                print(emp_id, emp_wid_data)
+                # print(emp_id, emp_wid_data)
+                # 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
+                pass 
+
+        workbook.save(os.getcwd() + "\\exports\\date_and_time-Payroll Stub.xlsx")
                 
 # Global Functions
 def validate(line_edit: str, data_type: str):
@@ -286,7 +298,7 @@ def open_file_explorer():
 def close_db():
     conn.close()
 
-conn = sqlite3.connect("database/stub.sqlite")
+conn = sqlite3.connect("database\\stub.sqlite")
 c = conn.cursor()
 c.execute("DELETE FROM employees"); c.execute("DELETE FROM deductions")
 
