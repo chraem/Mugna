@@ -347,7 +347,7 @@ font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
 border: 1px solid rgb(0,0,0);</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="input_SWP">
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1894,7 +1894,7 @@ padding: 2px;
           </size>
          </property>
          <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
+          <cursorShape>IBeamCursor</cursorShape>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
