@@ -255,7 +255,7 @@ class MainWindow(QMainWindow):
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
 
-        workbook = load_workbook(os.getcwd()+"\\exports\\basis.xlsx")
+        workbook = load_workbook(os.getcwd()+"\\basis.xlsx")
         worksheet = workbook.active
 
         if (c.execute("SELECT * FROM employees")):
