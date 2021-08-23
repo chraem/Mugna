@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
-from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import QRegExp, QSize
 from PyQt5.uic import loadUi
 
 import sys, main_images_rc, sqlite3
 
-deductions_DICT = {}
+deductions_DICT, visible = {}, False
 
 class MainWindow(QMainWindow):
     def  __init__(self):
@@ -21,6 +21,8 @@ class MainWindow(QMainWindow):
         validate(self.ot_hours_LE, "float"); validate(self.holiday_worked_LE, "float")
 
         self.stacked_widget_page(0)
+        self.report_TBL.setRowCount(0)
+        self.calculator.setVisible(visible)
 
         self.new_BTN.clicked.connect(self.clear_data)
         self.add_BTN.clicked.connect(self.add_data)
@@ -47,6 +49,8 @@ class MainWindow(QMainWindow):
         self.gross_pay_LE.textChanged.connect(self.reload_net_pay)
         self.total_deduction_LE.textChanged.connect(self.reload_net_pay)
         self.deductions_TBL.itemChanged.connect(self.reload_total_deduction)
+
+        self.open_calc_BTN.clicked.connect(self.open_calculator)
 
         self.show()
 
@@ -91,6 +95,7 @@ class MainWindow(QMainWindow):
 
                 "total_day_pay": self.total_day_pay_LE.text(),
                 "total_night_pay": self.total_night_pay_LE.text(),
+                "total_holiday_pay": self.total_holiday_pay_LE.text(),
                 "total_ot_pay": self.total_ot_pay_LE.text(),
                 "gross_pay": self.gross_pay_LE.text(),
                 "total_deduction": self.total_deduction_LE.text(),
@@ -109,14 +114,14 @@ class MainWindow(QMainWindow):
                                 fn, mn, ln,
                                 day_rate, night_rate, holiday_rate, ot_rate, 
                                 day_worked, night_worked, holiday_worked, ot_hours,
-                                total_day_pay, total_night_pay, total_ot_pay, 
+                                total_day_pay, total_night_pay, total_holiday_pay, total_ot_pay, 
                                 gross_pay, total_deduction, net_pay)
                             VALUES(
                                 :id,
                                 :fn, :mn, :ln,
                                 :day_rate, :night_rate, :holiday_rate, :ot_rate, 
                                 :day_worked, :night_worked, :holiday_worked, :ot_hours,
-                                :total_day_pay, :total_night_pay, :total_ot_pay, 
+                                :total_day_pay, :total_night_pay, :total_holiday_pay, :total_ot_pay,
                                 :gross_pay, :total_deduction, :net_pay
                                 )
                             """, employee_data
@@ -136,10 +141,13 @@ class MainWindow(QMainWindow):
                 show_pop_up("ID: "+employee_data["id"]+" already exists!")
             elif self.id_emp_LE.text() == "":
                 show_pop_up("ID field cannot be empty!")
+            else:
+                show_pop_up("An error occurred")
 
     
     def show_report(self):
         self.stacked_widget_page(1)
+        self.report_TBL.resizeColumnsToContents()
         if ( c.execute("SELECT * FROM employees") ):
             emps = c.fetchall()
             
@@ -147,10 +155,17 @@ class MainWindow(QMainWindow):
 
             for row, emp_in_row in enumerate(emps):
                 for in_row, emp_data in enumerate(emp_in_row):
-                    self.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row])))
-                    
+                    self.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else "None"))
+
     def export_stub(self):
-        self.report_TBL.setRowCount(0)
+        pass
+
+    def open_calculator(self):
+        global visible
+        if visible == False:
+            self.calculator.setVisible(True); visible = True
+        else:
+            self.calculator.setVisible(False); visible = False
 
     def add_row(self):
         self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
@@ -194,13 +209,12 @@ class MainWindow(QMainWindow):
         self.total_ot_pay_LE.setText(str(ot_rate*ot_worked))
 
     def reload_gross_pay(self):
-        gross_pay = (
-                      (float(self.total_day_pay_LE.text())     if self.total_day_pay_LE.text() != "" else 0.0)
-                    + (float(self.total_night_pay_LE.text())   if self.total_night_pay_LE.text() != "" else 0.0)
-                    + (float(self.total_holiday_pay_LE.text()) if self.total_holiday_pay_LE.text() != "" else 0.0)
-                    + (float(self.total_ot_pay_LE.text())      if self.total_ot_pay_LE.text() != "" else 0.0)
-                    ) 
-        self.gross_pay_LE.setText(str(gross_pay))
+        self.gross_pay_LE.setText(str(
+              (float(self.total_day_pay_LE.text())     if self.total_day_pay_LE.text() != "" else 0.0)
+            + (float(self.total_night_pay_LE.text())   if self.total_night_pay_LE.text() != "" else 0.0)
+            + (float(self.total_holiday_pay_LE.text()) if self.total_holiday_pay_LE.text() != "" else 0.0)
+            + (float(self.total_ot_pay_LE.text())      if self.total_ot_pay_LE.text() != "" else 0.0)
+                                  ))
 
     def reload_total_deduction(self):
         global deductions_DICT
@@ -246,14 +260,10 @@ def close_db():
 
 conn = sqlite3.connect("database/stub.sqlite")
 c = conn.cursor()
-c.execute("DELETE FROM employees")
-c.execute("DELETE FROM deductions")
+c.execute("DELETE FROM employees"); c.execute("DELETE FROM deductions")
 
 # App initialization
 app = QApplication(sys.argv)
 app.aboutToQuit.connect(close_db)
 mainWindow = MainWindow()
 sys.exit(app.exec_())
-
-# NOTES
-# Add validator in amount col
