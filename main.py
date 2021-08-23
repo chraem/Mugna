@@ -251,7 +251,7 @@ class MainWindow(QMainWindow):
             ))
 
     def export_data(self):
-        date_and_time = datetime.datetime.now().strftime("%m-%d-%Y(%I:%M:%S%p)")
+        date_and_time = datetime.datetime.now().strftime("%m-%d-%Y(%I-%M-%S%p)")
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
 
@@ -266,7 +266,8 @@ class MainWindow(QMainWindow):
                 # 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
                 pass 
 
-        workbook.save(os.getcwd() + "\\exports\\date_and_time-Payroll Stub.xlsx")
+        open_file_explorer()
+        workbook.save(os.getcwd() + "/exports/"+date_and_time+"-Payroll Stub.xlsx")
                 
 # Global Functions
 def validate(line_edit: str, data_type: str):
@@ -298,7 +299,7 @@ def open_file_explorer():
 def close_db():
     conn.close()
 
-conn = sqlite3.connect("database\\stub.sqlite")
+conn = sqlite3.connect("database/stub.sqlite")
 c = conn.cursor()
 c.execute("DELETE FROM employees"); c.execute("DELETE FROM deductions")
 
