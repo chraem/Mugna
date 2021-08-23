@@ -3,7 +3,7 @@ from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
 from PyQt5.QtCore import QRegExp, QSize
 from PyQt5.uic import loadUi
 
-import sys, main_images_rc, sqlite3
+import sys, main_images_rc, sqlite3, os, subprocess
 
 deductions_DICT, visible = {}, False
 
@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
 
         self.new_BTN.clicked.connect(self.clear_data)
         self.add_BTN.clicked.connect(self.add_data)
+        self.export_BTN.clicked.connect(self.export_data)
 
         self.add_deduction_BTN.clicked.connect(self.add_row)
         self.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
@@ -157,15 +158,25 @@ class MainWindow(QMainWindow):
                 for in_row, emp_data in enumerate(emp_in_row):
                     self.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else "None"))
 
-    def export_stub(self):
-        pass
-
     def open_calculator(self):
         global visible
+
         if visible == False:
             self.calculator.setVisible(True); visible = True
+            self.open_calc_BTN.setStyleSheet(u"""QPushButton{image: url(:/images/close.png);
+                                                 background-color: rgb(5, 55, 66);
+                                                 border-radius: 5px;
+                                                 padding: 2px; padding-right:8px;}
+                                                 QPushButton:hover{padding-right: 8px;}
+                                              """)
         else:
             self.calculator.setVisible(False); visible = False
+            self.open_calc_BTN.setStyleSheet(u"""QPushButton{image: url(:/images/open.png);
+                                                 background-color: rgb(5, 55, 66);
+                                                 border-radius: 5px;
+                                                 padding: 2px; padding-right:8px;}
+                                                 QPushButton:hover{padding-right: 8px;}
+                                              """)
 
     def add_row(self):
         self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
@@ -224,7 +235,7 @@ class MainWindow(QMainWindow):
             pre_deduction = self.deductions_TBL.item(row, 0)
             pre_amount = self.deductions_TBL.item(row, 1)
         
-            deduction = self.deductions_TBL.item(row, 0).text() if pre_deduction != None and pre_deduction.text() != "" else "LeftEmpty"+str(row)
+            deduction = self.deductions_TBL.item(row, 0).text() if pre_deduction != None and pre_deduction.text() != "" else "Deduction"+str(row)
             amount =  self.deductions_TBL.item(row, 1).text() if pre_amount != None and pre_amount.text() else 0.0
             
             deductions_DICT[deduction] = amount 
@@ -237,6 +248,13 @@ class MainWindow(QMainWindow):
             (float(self.gross_pay_LE.text()) if self.gross_pay_LE.text() != "" else 0.0) 
             - (float(self.total_deduction_LE.text()) if self.total_deduction_LE.text() != "" else 0.0)
             ))
+
+    def export_data(self):
+        if (c.execute("SELECT * FROM employees")):
+            emps = c.fetchall()
+            
+            for emp_id, emp_wid_data in enumerate(emps):
+                print(emp_id, emp_wid_data)
                 
 # Global Functions
 def validate(line_edit: str, data_type: str):
@@ -254,6 +272,16 @@ def show_pop_up(message: str):
     pop_up.setIcon(QMessageBox.Warning)
     pop_up.setStandardButtons(QMessageBox.Ok)
     pop_up.exec_()
+
+def open_file_explorer():
+    if (subprocess.run([
+        os.path.normpath(os.path.join(os.getenv('WINDIR'), 'explorer.exe')),
+        os.path.join(os.getcwd(), 'exports')
+        ])):
+        pass 
+    else: 
+        show_pop_up("Failed to load File Explorer. File is saved as ", "in " + os.getcwd() +"\\exports")
+    
 
 def close_db():
     conn.close()
