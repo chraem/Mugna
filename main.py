@@ -1,28 +1,42 @@
+import sys
+import sqlite3
+import os
+import subprocess
+import datetime
+
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
-from PyQt5.QtCore import QRegExp, QSize
+from PyQt5.QtCore import QRegExp
 from PyQt5.uic import loadUi
-
 from openpyxl import Workbook, load_workbook
 
-import sys, sqlite3, os, subprocess, datetime
-from mugna import main_images_rc,
+from mugna import main_images_rc
 
 deductions_DICT, visible = {}, False
 
 class MainWindow(QMainWindow):
+    """
+        Contains all the essential functions for main window.
+    """
     def  __init__(self):
         super(MainWindow, self).__init__()
         loadUi("mugna/assets/mainWindow.ui", self)
-    
+
         validate(self.id_emp_LE, "int")
-        validate(self.fn_emp_LE, "name"); validate(self.mn_emp_LE, "name"); validate(self.ln_emp_LE, "name")
-        validate(self.day_rate_LE, "float"); validate(self.night_rate_LE, "float"); 
-        validate(self.ot_rate_LE, "float"); validate(self.holiday_rate_LE, "float")
+        validate(self.fn_emp_LE, "name")
+        validate(self.mn_emp_LE, "name")
+        validate(self.ln_emp_LE, "name")
         validate(self.prepared_by_LE, "name")
 
-        validate(self.day_worked_LE, "float"); validate(self.night_worked_LE, "float")
-        validate(self.ot_hours_LE, "float"); validate(self.holiday_worked_LE, "float")
+        validate(self.day_rate_LE, "float")
+        validate(self.night_rate_LE, "float")
+        validate(self.ot_rate_LE, "float")
+        validate(self.holiday_rate_LE, "float")
+
+        validate(self.day_worked_LE, "float")
+        validate(self.night_worked_LE, "float")
+        validate(self.ot_hours_LE, "float")
+        validate(self.holiday_worked_LE, "float")
 
         self.stacked_widget_page(0)
         self.report_TBL.setRowCount(0)
@@ -36,10 +50,10 @@ class MainWindow(QMainWindow):
         self.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
         self.report_BTN.clicked.connect(self.show_report)
 
-        self.day_rate_LE.textChanged.connect(self.reload_total_day_pay); 
-        self.night_rate_LE.textChanged.connect(self.reload_total_night_pay); 
-        self.holiday_rate_LE.textChanged.connect(self.reload_total_holiday_pay); 
-        self.ot_rate_LE.textChanged.connect(self.reload_total_ot_pay); 
+        self.day_rate_LE.textChanged.connect(self.reload_total_day_pay)
+        self.night_rate_LE.textChanged.connect(self.reload_total_night_pay)
+        self.holiday_rate_LE.textChanged.connect(self.reload_total_holiday_pay)
+        self.ot_rate_LE.textChanged.connect(self.reload_total_ot_pay)
 
         self.day_worked_LE.textChanged.connect(self.reload_total_day_pay)
         self.night_worked_LE.textChanged.connect(self.reload_total_night_pay)
@@ -61,7 +75,7 @@ class MainWindow(QMainWindow):
 
     def clear_data(self):
         self.stacked_widget_page(0)
-        throw = [   self.id_emp_LE, self.fn_emp_LE, self.mn_emp_LE, self.ln_emp_LE,
+        to_throw = [   self.id_emp_LE, self.fn_emp_LE, self.mn_emp_LE, self.ln_emp_LE,
                     self.gross_pay_LE, self.total_deduction_LE, self.net_pay_LE,
                     self.day_rate_LE, self.night_rate_LE, self.holiday_rate_LE,
                     self.ot_rate_LE, self.day_worked_LE, self.night_worked_LE,
@@ -70,14 +84,17 @@ class MainWindow(QMainWindow):
                     self.gross_pay_LE, self.total_deduction_LE, self.net_pay_LE
                 ]
 
-        for i in range(len(throw)):
-            throw[i].clear()
+        for i, throw in enumerate(to_throw):#range(len(throw)):
+            throw.clear()
 
         self.deductions_TBL.setRowCount(0)
-        
+
     def add_data(self):
+        """
+        Reads all the data inputted in line edits and commits them on database.
+        """
         global deductions_DICT
-        
+
         try:
             employee_data ={
                 "id": self.id_emp_LE.text(),
@@ -90,7 +107,7 @@ class MainWindow(QMainWindow):
                 "night_rate": self.night_rate_LE.text(),
                 "holiday_rate": self.holiday_rate_LE.text(),
                 "ot_rate" :self.ot_rate_LE.text(),
-                                
+
                 "day_worked": self.day_worked_LE.text(),
                 "night_worked": self.night_worked_LE.text(),
                 "holiday_worked": self.holiday_worked_LE.text(),
@@ -140,20 +157,22 @@ class MainWindow(QMainWindow):
                     conn.commit()
         except:
             c.execute("SELECT id FROM employees WHERE id = :id LIMIT 1", employee_data)
-            if (c.fetchone()):
+            if c.fetchone():
                 show_pop_up("ID: "+employee_data["id"]+" already exists!")
             elif self.id_emp_LE.text() == "":
                 show_pop_up("ID field cannot be empty!")
             else:
                 show_pop_up("An error occurred")
 
-    
     def show_report(self):
+        """
+        Displays all the data in the database to table widget.
+        """
         self.stacked_widget_page(1)
         self.report_TBL.resizeColumnsToContents()
-        if ( c.execute("SELECT * FROM employees") ):
+        if c.execute("SELECT * FROM employees"):
             emps = c.fetchall()
-            
+
             self.report_TBL.setRowCount(len(emps))
 
             for row, emp_in_row in enumerate(emps):
@@ -165,7 +184,7 @@ class MainWindow(QMainWindow):
 
         if visible == False:
             self.calculator.setVisible(True); visible = True
-            self.open_calc_BTN.setStyleSheet(u"""QPushButton{image: url(:/images/close.png);
+            self.open_calc_BTN.setStyleSheet("""QPushButton{image: url(:/images/close.png);
                                                  background-color: rgb(5, 55, 66);
                                                  border-radius: 5px;
                                                  padding: 2px; padding-right:8px;}
@@ -173,7 +192,7 @@ class MainWindow(QMainWindow):
                                               """)
         else:
             self.calculator.setVisible(False); visible = False
-            self.open_calc_BTN.setStyleSheet(u"""QPushButton{image: url(:/images/open.png);
+            self.open_calc_BTN.setStyleSheet("""QPushButton{image: url(:/images/open.png);
                                                  background-color: rgb(5, 55, 66);
                                                  border-radius: 5px;
                                                  padding: 2px; padding-right:8px;}
@@ -182,10 +201,10 @@ class MainWindow(QMainWindow):
 
     def add_row(self):
         self.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
-        
+
     def remove_specific_row(self):
         self.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
-        
+
     def stacked_widget_page(self, page):
         if page == 0:
             self.emp_SW.setCurrentIndex(0)
@@ -232,22 +251,22 @@ class MainWindow(QMainWindow):
     def reload_total_deduction(self):
         global deductions_DICT
         num_of_row, deductions = self.deductions_TBL.rowCount(), 0.0
-        
+
         for row in range(num_of_row):
             pre_deduction = self.deductions_TBL.item(row, 0)
             pre_amount = self.deductions_TBL.item(row, 1)
-        
+
             deduction = self.deductions_TBL.item(row, 0).text() if pre_deduction != None and pre_deduction.text() != "" else "Deduction"+str(row)
             amount =  self.deductions_TBL.item(row, 1).text() if pre_amount != None and pre_amount.text() else 0.0
-            
-            deductions_DICT[deduction] = amount 
+
+            deductions_DICT[deduction] = amount
             deductions += float(deductions_DICT[deduction])
-        
+
         self.total_deduction_LE.setText(str(deductions))
 
     def reload_net_pay(self):
         self.net_pay_LE.setText(str(
-            (float(self.gross_pay_LE.text()) if self.gross_pay_LE.text() != "" else 0.0) 
+            (float(self.gross_pay_LE.text()) if self.gross_pay_LE.text() != "" else 0.0)
             - (float(self.total_deduction_LE.text()) if self.total_deduction_LE.text() != "" else 0.0)
             ))
 
@@ -256,20 +275,20 @@ class MainWindow(QMainWindow):
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
 
-        workbook = load_workbook(os.getcwd()+"\\basis.xlsx")
+        workbook = load_workbook(os.getcwd()+"mugna/basis.xlsx")
         worksheet = workbook.active
 
-        if (c.execute("SELECT * FROM employees")):
+        if c.execute("SELECT * FROM employees"):
             emps = c.fetchall()
-            
+
             for emp_id, emp_wid_data in enumerate(emps):
                 # print(emp_id, emp_wid_data)
                 # 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
-                pass 
+                pass
 
         open_file_explorer()
         workbook.save(os.getcwd() + "/exports/"+date_and_time+"-Payroll Stub.xlsx")
-                
+
 # Global Functions
 def validate(line_edit: str, data_type: str):
     if data_type == "int":
@@ -292,16 +311,16 @@ def open_file_explorer():
         os.path.normpath(os.path.join(os.getenv('WINDIR'), 'explorer.exe')),
         os.path.join(os.getcwd(), 'exports')
         ])):
-        pass 
-    else: 
+        pass
+    else:
         show_pop_up("Failed to load File Explorer. File is saved as ", "in " + os.getcwd() +"\\exports")
-    
+
 
 def close_db():
     conn.close()
 
 
-conn = sqlite3.connect(os.getcwd()+"mugna/database/stub.sqlite")
+conn = sqlite3.connect("mugna/database/stub.sqlite")
 c = conn.cursor()
 c.execute("DELETE FROM employees"); c.execute("DELETE FROM deductions")
 
