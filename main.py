@@ -5,14 +5,15 @@ from PyQt5.uic import loadUi
 
 from openpyxl import Workbook, load_workbook
 
-import sys, main_images_rc, sqlite3, os, subprocess, datetime
+import sys, sqlite3, os, subprocess, datetime
+from mugna import main_images_rc,
 
 deductions_DICT, visible = {}, False
 
 class MainWindow(QMainWindow):
     def  __init__(self):
         super(MainWindow, self).__init__()
-        loadUi("assets/mainWindow.ui", self)
+        loadUi("mugna/assets/mainWindow.ui", self)
     
         validate(self.id_emp_LE, "int")
         validate(self.fn_emp_LE, "name"); validate(self.mn_emp_LE, "name"); validate(self.ln_emp_LE, "name")
@@ -299,7 +300,8 @@ def open_file_explorer():
 def close_db():
     conn.close()
 
-conn = sqlite3.connect("database/stub.sqlite")
+
+conn = sqlite3.connect(os.getcwd()+"mugna/database/stub.sqlite")
 c = conn.cursor()
 c.execute("DELETE FROM employees"); c.execute("DELETE FROM deductions")
 
