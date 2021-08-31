@@ -229,6 +229,44 @@ QPushButton:hover{
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="back_BTN">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+	background-color: rgb(5, 55, 66);
+	border-radius: 5px;
+	color: rgb(255, 255, 255);
+	font: bold 12pt &quot;assets/font/monda.ttf&quot;;
+	padding: 2px;
+}
+
+QPushButton:hover{
+	background-color:rgb(57, 162, 219) ;
+}</string>
+            </property>
+            <property name="text">
+             <string>BACK</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

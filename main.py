@@ -44,11 +44,13 @@ class MainWindow(QMainWindow):
 
         self.new_BTN.clicked.connect(self.clear_data)
         self.add_BTN.clicked.connect(self.add_data)
-        self.export_BTN.clicked.connect(self.export_data)
+        self.export_BTN.clicked.connect(self.export_data)         
+        self.back_BTN.clicked.connect(lambda: self.stacked_widget_page(0))
 
         self.add_deduction_BTN.clicked.connect(self.add_row)
         self.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
         self.report_BTN.clicked.connect(self.show_report)
+        
 
         self.day_rate_LE.textChanged.connect(self.reload_total_day_pay)
         self.night_rate_LE.textChanged.connect(self.reload_total_night_pay)
@@ -69,12 +71,14 @@ class MainWindow(QMainWindow):
         self.total_deduction_LE.textChanged.connect(self.reload_net_pay)
         self.deductions_TBL.itemChanged.connect(self.reload_total_deduction)
 
-        self.open_calc_BTN.clicked.connect(self.open_calculator)
+        self.open_calc_BTN.clicked.connect(self.calculator_visibility)
 
         self.show()
 
     def clear_data(self):
-        self.stacked_widget_page(0)
+        """
+        Clears all the line edits excluding the company name and prepared by line edits.
+        """
         to_throw = [   self.id_emp_LE, self.fn_emp_LE, self.mn_emp_LE, self.ln_emp_LE,
                     self.gross_pay_LE, self.total_deduction_LE, self.net_pay_LE,
                     self.day_rate_LE, self.night_rate_LE, self.holiday_rate_LE,
@@ -84,7 +88,7 @@ class MainWindow(QMainWindow):
                     self.gross_pay_LE, self.total_deduction_LE, self.net_pay_LE
                 ]
 
-        for i, throw in enumerate(to_throw):#range(len(throw)):
+        for i, throw in enumerate(to_throw):
             throw.clear()
 
         self.deductions_TBL.setRowCount(0)
@@ -179,7 +183,10 @@ class MainWindow(QMainWindow):
                 for in_row, emp_data in enumerate(emp_in_row):
                     self.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else "None"))
 
-    def open_calculator(self):
+    def calculator_visibility(self):
+        """
+        Hides and show the calculator frame.
+        """
         global visible
 
         if visible == False:
@@ -209,38 +216,61 @@ class MainWindow(QMainWindow):
         if page == 0:
             self.emp_SW.setCurrentIndex(0)
             self.export_BTN.setVisible(False)
-            self.report_BTN.setVisible(True); self.add_BTN.setVisible(True)
-            self.label_6.setVisible(True); self.prepared_by_LE.setVisible(True)
-            self.prev_BTN.setVisible(True); self.next_BTN.setVisible(True)
+            self.back_BTN.setVisible(False)
+            self.report_BTN.setVisible(True)
+            self.add_BTN.setVisible(True)
+            self.label_6.setVisible(True)
+            self.prepared_by_LE.setVisible(True)
+            self.prev_BTN.setVisible(True)
+            self.next_BTN.setVisible(True)
         else:
             self.emp_SW.setCurrentIndex(1)
+            self.export_BTN.setVisible(True)
+            self.back_BTN.setVisible(True)
+            self.new_BTN.setVisible(False)
             self.add_BTN.setVisible(False)
             self.report_BTN.setVisible(False)
-            self.export_BTN.setVisible(True)
-            self.label_6.setVisible(False); self.prepared_by_LE.setVisible(False)
-            self.prev_BTN.setVisible(False); self.next_BTN.setVisible(False)
+            self.label_6.setVisible(False)
+            self.prepared_by_LE.setVisible(False)
+            self.prev_BTN.setVisible(False)
+            self.next_BTN.setVisible(False)
 
     def reload_total_day_pay(self):
+        """
+        Updates the line edit for total day pay each time the line edits for day rate and worked changed.
+        """
         day_rate = float(self.day_rate_LE.text()) if self.day_rate_LE.text() != "" else 0.0
         day_worked = float(self.day_worked_LE.text()) if self.day_worked_LE.text() != "" else 0.0
         self.total_day_pay_LE.setText(str(day_rate*day_worked))
 
     def reload_total_night_pay(self):
+        """
+        Updates the line edit for total night pay each time the line edits for night rate and worked changed.
+        """
         night_rate = float(self.night_rate_LE.text()) if self.night_rate_LE.text() != "" else 0.0
         night_worked = float(self.night_worked_LE.text()) if self.night_worked_LE.text() != "" else 0.0
         self.total_night_pay_LE.setText(str(night_rate*night_worked))
 
     def reload_total_holiday_pay(self):
+        """
+        Updates the line edit for total holiday pay each time the line edits for holiday rate and worked changed.
+        """
         holiday_rate = float(self.holiday_rate_LE.text()) if self.holiday_rate_LE.text() != "" else 0.0
         holiday_worked = float(self.holiday_worked_LE.text()) if self.holiday_worked_LE.text() != "" else 0.0
         self.total_holiday_pay_LE.setText(str(holiday_rate*holiday_worked))
 
     def reload_total_ot_pay(self):
+        """
+        Updates the line edit for total ot pay each time the line edits for ot rate and worked changed.
+        """
         ot_rate = float(self.ot_rate_LE.text()) if self.ot_rate_LE.text() != "" else 0.0
         ot_worked = float(self.ot_hours_LE.text()) if self.ot_hours_LE.text() != "" else 0.0
         self.total_ot_pay_LE.setText(str(ot_rate*ot_worked))
 
     def reload_gross_pay(self):
+        """
+        Updates the line edit for gross pay each time the line edits for totals changed.
+        """
         self.gross_pay_LE.setText(str(
               (float(self.total_day_pay_LE.text())     if self.total_day_pay_LE.text() != "" else 0.0)
             + (float(self.total_night_pay_LE.text())   if self.total_night_pay_LE.text() != "" else 0.0)
@@ -249,6 +279,9 @@ class MainWindow(QMainWindow):
                                   ))
 
     def reload_total_deduction(self):
+        """
+        Updates the line edit for total deduction each time the deductionst table changed.
+        """
         global deductions_DICT
         num_of_row, deductions = self.deductions_TBL.rowCount(), 0.0
 
@@ -265,12 +298,18 @@ class MainWindow(QMainWindow):
         self.total_deduction_LE.setText(str(deductions))
 
     def reload_net_pay(self):
+        """
+        Updates the line edit for total night pay each time the line edits for gross pay and total deduction changed.
+        """
         self.net_pay_LE.setText(str(
             (float(self.gross_pay_LE.text()) if self.gross_pay_LE.text() != "" else 0.0)
             - (float(self.total_deduction_LE.text()) if self.total_deduction_LE.text() != "" else 0.0)
             ))
 
     def export_data(self):
+        """
+        Generates excel file
+        """
         date_and_time = datetime.datetime.now().strftime("%m-%d-%Y(%I-%M-%S%p)")
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
@@ -279,17 +318,16 @@ class MainWindow(QMainWindow):
         worksheet = workbook.active
 
         if c.execute("SELECT * FROM employees"):
-            emps = c.fetchall()
+            employees = c.fetchall()
 
-            for emp_id, emp_wid_data in enumerate(emps):
-                # print(emp_id, emp_wid_data)
+            for emp, empployee_data in enumerate(employees):
+                # print(emp, empployee_data)
                 # 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
                 pass
 
         open_file_explorer()
         workbook.save(os.getcwd() + "/exports/"+date_and_time+"-Payroll Stub.xlsx")
 
-# Global Functions
 def validate(line_edit: str, data_type: str):
     if data_type == "int":
         line_edit.setValidator(QIntValidator())
@@ -313,7 +351,7 @@ def open_file_explorer():
         ])):
         pass
     else:
-        show_pop_up("Failed to load File Explorer. File is saved as ", "in " + os.getcwd() +"\\exports")
+        show_pop_up("Failed to load File Explorer. File is saved as ", "in " + os.getcwd() +"/exports")
 
 
 def close_db():
@@ -322,7 +360,8 @@ def close_db():
 
 conn = sqlite3.connect("mugna/database/stub.sqlite")
 c = conn.cursor()
-c.execute("DELETE FROM employees"); c.execute("DELETE FROM deductions")
+c.execute("DELETE FROM employees")
+c.execute("DELETE FROM deductions")
 
 # App initialization
 app = QApplication(sys.argv)
