@@ -1,16 +1,17 @@
 import sys
 import sqlite3
 import subprocess
-import datetime
+from datetime import datetime
 from os import path, getenv, getcwd
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
-from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import QRegExp, QTimer
 from PyQt5.uic import loadUi
 from openpyxl import Workbook, load_workbook
 
 from mugna.assets import main_images_rc
+from mugna.assets.Display_Settings import Show
 
 deductions_DICT, visible = {}, False
 
@@ -42,7 +43,7 @@ class MainWindow(QMainWindow):
         self.report_TBL.setRowCount(0)
         self.calculator.setVisible(visible)
 
-        self.new_BTN.clicked.connect(self.clear_data)
+        self.clear_BTN.clicked.connect(self.clear_data)
         self.add_BTN.clicked.connect(self.add_data)
         self.export_BTN.clicked.connect(self.export_data)         
         self.back_BTN.clicked.connect(lambda: self.stacked_widget_page(0))
@@ -79,14 +80,14 @@ class MainWindow(QMainWindow):
         """
         Clears all the line edits excluding the company name and prepared by line edits.
         """
-        to_throw = [   self.id_emp_LE, self.fn_emp_LE, self.mn_emp_LE, self.ln_emp_LE,
+        to_throw = [self.id_emp_LE, self.fn_emp_LE, self.mn_emp_LE, self.ln_emp_LE,
                     self.gross_pay_LE, self.total_deduction_LE, self.net_pay_LE,
                     self.day_rate_LE, self.night_rate_LE, self.holiday_rate_LE,
                     self.ot_rate_LE, self.day_worked_LE, self.night_worked_LE,
                     self.holiday_worked_LE, self.ot_hours_LE, self.total_day_pay_LE,
                     self.total_night_pay_LE, self.total_holiday_pay_LE, self.total_ot_pay_LE,
                     self.gross_pay_LE, self.total_deduction_LE, self.net_pay_LE
-                ]
+                   ]
 
         for i, throw in enumerate(to_throw):
             throw.clear()
@@ -159,6 +160,9 @@ class MainWindow(QMainWindow):
                             """, (employee_data["id"], deduction, deductions_DICT[deduction],)
                 )):
                     conn.commit()
+
+            self.notification_LBL.setText("Added successfully.")
+            QTimer.singleShot(10000, self.show_notification_LBL)
         except:
             c.execute("SELECT id FROM employees WHERE id = :id LIMIT 1", employee_data)
             if c.fetchone():
@@ -219,6 +223,7 @@ class MainWindow(QMainWindow):
             self.back_BTN.setVisible(False)
             self.report_BTN.setVisible(True)
             self.add_BTN.setVisible(True)
+            self.clear_BTN.setVisible(True)
             self.label_6.setVisible(True)
             self.prepared_by_LE.setVisible(True)
             self.prev_BTN.setVisible(True)
@@ -229,7 +234,7 @@ class MainWindow(QMainWindow):
             self.emp_SW.setCurrentIndex(1)
             self.export_BTN.setVisible(True)
             self.back_BTN.setVisible(True)
-            self.new_BTN.setVisible(False)
+            self.clear_BTN.setVisible(False)
             self.add_BTN.setVisible(False)
             self.report_BTN.setVisible(False)
             self.label_6.setVisible(False)
@@ -314,7 +319,7 @@ class MainWindow(QMainWindow):
         """
         Generates excel file
         """
-        date_and_time = datetime.datetime.now().strftime("%m-%d-%Y(%I-%M-%S%p)")
+        date_and_time = datetime.now().strftime("%m-%d-%Y(%I-%M-%S%p)")
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
 
@@ -332,9 +337,15 @@ class MainWindow(QMainWindow):
         try:
             filename = date_and_time+"-Payroll Stub.xlsx"
             workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
+            self.notification_LBL.setText("Exported successfully.")
+            QTimer.singleShot( 10000, self.show_notification_LBL)
             open_file_explorer(filename)
         except:
             show_pop_up("Failed to export.")
+
+    def show_notification_LBL(self):
+        self.notification_LBL.setVisible(False)
+
 
 def validate(line_edit: str, data_type: str):
     if data_type == "int":
@@ -362,6 +373,7 @@ def open_file_explorer(filename: str):
         show_pop_up("Failed to load File Explorer. File is saved as " 
             + filename + " in " 
             + (path.normpath(getcwd()+"/mugna/exports")))
+
 
 def close_db():
     conn.close()
