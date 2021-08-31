@@ -116,7 +116,7 @@ font: bold 20pt &quot;assets/font/monda.ttf&quot;;</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="new_BTN">
+           <widget class="QPushButton" name="clear_BTN">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -146,7 +146,7 @@ QPushButton:hover{
 }</string>
             </property>
             <property name="text">
-             <string>NEW</string>
+             <string>CLEAR</string>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -391,7 +391,7 @@ font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
 border: 1px solid rgb(0,0,0);</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="input_SWP">
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1606,6 +1606,20 @@ padding: 2px;</string>
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="notification_LBL">
+            <property name="styleSheet">
+             <string notr="true">color:  rgb(0,0,0);
+font: bold 11pt &quot;asstes/font/monda.ttf&quot;;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
