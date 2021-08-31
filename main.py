@@ -1,8 +1,8 @@
 import sys
 import sqlite3
-import os
 import subprocess
 import datetime
+from os import path, getenv, getcwd
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
@@ -10,7 +10,7 @@ from PyQt5.QtCore import QRegExp
 from PyQt5.uic import loadUi
 from openpyxl import Workbook, load_workbook
 
-from mugna import main_images_rc
+from mugna.assets import main_images_rc
 
 deductions_DICT, visible = {}, False
 
@@ -318,7 +318,7 @@ class MainWindow(QMainWindow):
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
 
-        workbook = load_workbook(os.getcwd()+"mugna/basis.xlsx")
+        workbook = load_workbook(path.normpath(getcwd()+"/mugna/assets/basis.xlsx"))
         worksheet = workbook.active
 
         if c.execute("SELECT * FROM employees"):
@@ -329,8 +329,12 @@ class MainWindow(QMainWindow):
                 # 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
                 pass
 
-        open_file_explorer()
-        workbook.save(os.getcwd() + "/exports/"+date_and_time+"-Payroll Stub.xlsx")
+        try:
+            filename = date_and_time+"-Payroll Stub.xlsx"
+            workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
+            open_file_explorer(filename)
+        except:
+            show_pop_up("Failed to export.")
 
 def validate(line_edit: str, data_type: str):
     if data_type == "int":
@@ -348,15 +352,16 @@ def show_pop_up(message: str):
     pop_up.setStandardButtons(QMessageBox.Ok)
     pop_up.exec_()
 
-def open_file_explorer():
-    if (subprocess.run([
-        os.path.normpath(os.path.join(os.getenv('WINDIR'), 'explorer.exe')),
-        os.path.join(os.getcwd(), 'exports')
-        ])):
-        pass
-    else:
-        show_pop_up("Failed to load File Explorer. File is saved as ", "in " + os.getcwd() +"/exports")
-
+def open_file_explorer(filename: str):
+    try:
+        subprocess.run([
+        path.normpath(path.join(getenv("WINDIR"), "explorer.exe")),
+        path.normpath(getcwd()+"/mugna/exports")
+        ])
+    except:
+        show_pop_up("Failed to load File Explorer. File is saved as " 
+            + filename + " in " 
+            + (path.normpath(getcwd()+"/mugna/exports")))
 
 def close_db():
     conn.close()
