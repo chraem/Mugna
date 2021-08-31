@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Simple Payroll Stub Maker (@chraem)</string>
+   <string>Mugna</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images/main_images.qrc">
@@ -271,7 +271,13 @@ QPushButton:hover{
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame">
+        <widget class="QFrame" name="company_FRAME">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>55</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -321,7 +327,7 @@ QPushButton:hover{
            </spacer>
           </item>
           <item row="2" column="1">
-           <widget class="QLabel" name="label_12">
+           <widget class="QLabel" name="company_name_LBL">
             <property name="styleSheet">
              <string notr="true">color: rgb(5, 55, 66);
 font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
