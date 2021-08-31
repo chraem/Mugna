@@ -223,6 +223,8 @@ class MainWindow(QMainWindow):
             self.prepared_by_LE.setVisible(True)
             self.prev_BTN.setVisible(True)
             self.next_BTN.setVisible(True)
+            self.company_name_LBL.setVisible(True)
+            self.company_name_LE.setVisible(True)
         else:
             self.emp_SW.setCurrentIndex(1)
             self.export_BTN.setVisible(True)
@@ -234,6 +236,8 @@ class MainWindow(QMainWindow):
             self.prepared_by_LE.setVisible(False)
             self.prev_BTN.setVisible(False)
             self.next_BTN.setVisible(False)
+            self.company_name_LE.setVisible(False)
+            self.company_name_LBL.setVisible(False)
 
     def reload_total_day_pay(self):
         """
