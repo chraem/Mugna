@@ -11,7 +11,7 @@ from PyQt5.uic import loadUi
 from openpyxl import Workbook, load_workbook
 
 from mugna.assets import main_images_rc
-from mugna.assets.Display_Settings import Show
+from export import generate_stub, save_wb
 
 deductions_DICT, visible = {}, False
 
@@ -328,15 +328,11 @@ class MainWindow(QMainWindow):
 
         if c.execute("SELECT * FROM employees"):
             employees = c.fetchall()
-
-            for emp, empployee_data in enumerate(employees):
-                # print(emp, empployee_data)
-                # 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
-                pass
-
+            generate_stub(company_name, employees, prepared_by)
+        
         try:
             filename = date_and_time+"-Payroll Stub.xlsx"
-            workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
+            save_wb(workbook, filename)
             self.notification_LBL.setText("Exported successfully.")
             QTimer.singleShot( 10000, self.show_notification_LBL)
             open_file_explorer(filename)
