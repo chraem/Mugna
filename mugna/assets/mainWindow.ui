@@ -391,7 +391,7 @@ font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
 border: 1px solid rgb(0,0,0);</string>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="input_SWP">
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -721,7 +721,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>OT Hours</string>
+                       <string>Hour Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -731,7 +731,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Day Hour Rate</string>
+                       <string>Day Shift Hourly Rate</string>
                       </property>
                      </widget>
                     </item>
@@ -782,7 +782,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Day Worked</string>
+                       <string>Hour Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -828,7 +828,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Total Night Pay</string>
+                       <string>Total Night Shift Pay</string>
                       </property>
                      </widget>
                     </item>
@@ -857,7 +857,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Night Worked</string>
+                       <string>Hour Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -899,7 +899,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Total Day Pay</string>
+                       <string>Total Day Shift  Pay</string>
                       </property>
                      </widget>
                     </item>
@@ -909,7 +909,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Night  Rate</string>
+                       <string>Night Shift Hourly RAte</string>
                       </property>
                      </widget>
                     </item>
@@ -919,7 +919,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Holiday Rate</string>
+                       <string>Holiday Hourly Rate</string>
                       </property>
                      </widget>
                     </item>
@@ -1003,7 +1003,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Holiday Worked</string>
+                       <string>Hour Worked</string>
                       </property>
                      </widget>
                     </item>
