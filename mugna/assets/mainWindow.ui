@@ -899,7 +899,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Total Day Shift  Pay</string>
+                       <string>Total Day Shift Pay</string>
                       </property>
                      </widget>
                     </item>
