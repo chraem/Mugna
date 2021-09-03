@@ -162,7 +162,8 @@ class MainWindow(QMainWindow):
                     conn.commit()
 
             self.notification_LBL.setText("Added successfully.")
-            QTimer.singleShot(10000, self.show_notification_LBL)
+            self.notification_LBL.setVisible(True)
+            QTimer.singleShot(1000, self.show_notification_LBL)
         except:
             c.execute("SELECT id FROM employees WHERE id = :id LIMIT 1", employee_data)
             if c.fetchone():
@@ -289,7 +290,7 @@ class MainWindow(QMainWindow):
 
     def reload_total_deduction(self):
         """
-        Updates the line edit for total deduction each time the deductionst table changed.
+        Updates the line edit for total deduction each time the deductions table changed.
         """
         global deductions_DICT
         num_of_row, deductions = self.deductions_TBL.rowCount(), 0.0
@@ -323,18 +324,19 @@ class MainWindow(QMainWindow):
         company_name = self.company_name_LE.text()
         prepared_by = self.prepared_by_LE.text()
 
-        workbook = load_workbook(path.normpath(getcwd()+"/mugna/assets/basis.xlsx"))
-        worksheet = workbook.active
+        wb = load_workbook(path.normpath(getcwd()+"/mugna/assets/basis.xlsx"))
+        ws = wb.active
 
         if c.execute("SELECT * FROM employees"):
             employees = c.fetchall()
-            generate_stub(company_name, employees, prepared_by)
+            generate_stub(company_name=company_name, employees=employees, prepared_by=prepared_by, ws=ws)
         
         try:
             filename = date_and_time+"-Payroll Stub.xlsx"
-            save_wb(workbook, filename)
+            save_wb(wb, filename)
+            self.notification_LBL.setVisible(True)
             self.notification_LBL.setText("Exported successfully.")
-            QTimer.singleShot( 10000, self.show_notification_LBL)
+            QTimer.singleShot( 1000, self.show_notification_LBL)
             open_file_explorer(filename)
         except:
             show_pop_up("Failed to export.")
