@@ -163,7 +163,7 @@ class MainWindow(QMainWindow):
 
             self.notification_LBL.setText("Added successfully.")
             self.notification_LBL.setVisible(True)
-            QTimer.singleShot(1000, self.show_notification_LBL)
+            QTimer.singleShot(500, self.show_notification_LBL)
         except:
             c.execute("SELECT id FROM employees WHERE id = :id LIMIT 1", employee_data)
             if c.fetchone():
@@ -334,9 +334,9 @@ class MainWindow(QMainWindow):
         try:
             filename = date_and_time+"-Payroll Stub.xlsx"
             save_wb(wb, filename)
-            self.notification_LBL.setVisible(True)
             self.notification_LBL.setText("Exported successfully.")
-            QTimer.singleShot( 1000, self.show_notification_LBL)
+            self.notification_LBL.setVisible(True)
+            QTimer.singleShot(500, self.show_notification_LBL)
             open_file_explorer(filename)
         except:
             show_pop_up("Failed to export.")
