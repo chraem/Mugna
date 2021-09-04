@@ -164,12 +164,9 @@ def generate_stub(company_name, employees, prepared_by, ws):
         ws[x[5]+y[19]].border=TN_B
         ws[x[8]+y[19]].border=TN_B
 
-
         # Net Pay
-        start_row=int(y[13]), start_column=int(x[8]), end_row=int(y[14]), end_column=int(x[9])
-        ws.merge_cells(x[5]+y[19]+":"+x[5]+y[19])
-
-
+        ws.merge_cells(x[8]+y[13]+":"+x[8]+y[14])
+        ws.merge_cells(x[9]+y[13]+":"+x[9]+y[14])
 
 def save_wb(workbook, filename):
 	workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
