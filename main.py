@@ -336,7 +336,7 @@ class MainWindow(QMainWindow):
             save_wb(wb, filename)
             self.notification_LBL.setText("Exported successfully.")
             self.notification_LBL.setVisible(True)
-            QTimer.singleShot(500, self.show_notification_LBL)
+            QTimer.singleShot(1500, self.show_notification_LBL)
             open_file_explorer(filename)
         except:
             show_pop_up("Failed to export.")
