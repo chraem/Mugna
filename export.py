@@ -24,11 +24,11 @@ def generate_stub(company_name, employees, prepared_by, ws):
 
         x= [get_column_letter(x_onset + i) for i in range(col_per_stub)]
         x.insert(0,'-')
-        # 0, A, B, C, D, E, F, G, H, I, J, K
-        # 0, L, M, N, O, P, Q, R, S, T, U, V
+        # -, A, B, C, D, E, F, G, H, I, J, K
+        # -, L, M, N, O, P, Q, R, S, T, U, V
+
         y= [str(row_number) for row_number in range(y_onset, row_per_stub + y_onset)]
         y.insert(0,'-')
-        
         # emp # y_onset # row_per_stub + y_onset # row_number
         #  0  # 1       # 22 + 1                 # 1, 2, 3, 4, ..., 23
         #  1  # 1       # 22 + 1                 # 1, 2, 3, 4, ..., 23
@@ -46,9 +46,12 @@ def generate_stub(company_name, employees, prepared_by, ws):
         fill2= PatternFill(fill_type="solid", start_color="FFE699")
 
         # Border Style
-        TDDD = Side(border_style = "thin", style="dashDotDot")
-        #medium = Side()
+        TD= Side(border_style = "dashDotDot")
+        TN= Side(border_style= "thin")
+        MN= Side(border_style= "medium")
 
+        # Border Position
+        TD_T= Border(top=TD)
 
         # Stub Labels
         ws[x[2]+y[2]]= company_name;                               ws[x[2]+y[2]].font= ANB18
@@ -81,29 +84,30 @@ def generate_stub(company_name, employees, prepared_by, ws):
 
         ws[x[5]+y[13]]= "Gross Pay";                               ws[x[5]+y[13]].font= ANB12
         ws[x[5]+y[14]]= "Total Deduction";                         ws[x[5]+y[13]].font= ANB12
-        ws[x[8]+y[13]]= "Net Pay";                                 ws[x[8]+y[13]].font= ANB12
+        ws[x[8]+y[13]]= "NET PAY";                                 ws[x[8]+y[13]].font= ANB12
 
-        ws[x[5]+y[13]]= "Received by ";                            ws[x[5]+y[13]].font= ANB12        
-        ws[x[8]+y[13]]= "Prepared by "+prepared_by;                ws[x[8]+y[13]].font= ANB12
+        ws[x[5]+y[18]]= "Received by ";                            ws[x[5]+y[18]].font= ANB12        
+        ws[x[8]+y[18]]= "Prepared by "+prepared_by;                ws[x[8]+y[18]].font= ANB12
 
         # Fills
-        for col in range(x_onset+1, col_per_stub-1):
-            ws[x[col]+y[8]].fill = fill1
-            ws[x[col]+y[10]].fill = fill1
+        for col in range(2, col_per_stub-1):
+            ws[x[col]+y[8]].fill= fill1
+            ws[x[col]+y[10]].fill= fill1
 
-        for col in range(x_onset+1, col_per_stub-7):
-            ws[x[col]+y[13]].fill = fill1
+        for col in range(2, col_per_stub-7):
+            ws[x[col]+y[13]].fill= fill1
 
-        for col in range(x_onset+4, col_per_stub-4):
-            ws[x[col]+y[13]].fill = fill1
-            ws[x[col]+y[14]].fill = fill1
+        for col in range(5, col_per_stub-4):
+            ws[x[col]+y[13]].fill= fill1
+            ws[x[col]+y[14]].fill= fill1
 
-        for col in range(col_per_stub-2, col_per_stub-1):
-            ws[x[col]+y[13]].fill = fill2
-            ws[x[col]+y[14]].fill = fill2
+        for col in range(col_per_stub-3, col_per_stub-1): 
+            ws[x[col]+y[13]].fill= fill2
+            ws[x[col]+y[14]].fill= fill2
 
         # Borders
-
+        for col in range(x_onset, col_per_stub):
+            ws[x[col]+y[1]].border= TD_T
 
 
 def save_wb(workbook, filename):
