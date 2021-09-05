@@ -391,7 +391,7 @@ font: bold 15pt &quot;assets/font/monda.ttf&quot;;</string>
 border: 1px solid rgb(0,0,0);</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="input_SWP">
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1392,6 +1392,9 @@ border: none;</string>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
              </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::SelectedClicked</set>
+             </property>
              <property name="verticalScrollMode">
               <enum>QAbstractItemView::ScrollPerPixel</enum>
              </property>
@@ -1518,7 +1521,7 @@ border: none;</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <property name="spacing">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="leftMargin">
            <number>0</number>
@@ -1571,7 +1574,42 @@ font: 11pt &quot;asstes/font/monda.ttf&quot;;</string>
              <string notr="true">border: none;
 border-bottom: 1px solid rgb(0,0,0);
 background-color: rgba(5, 55, 66, 50);
+font: 12pt &quot;assets/font/monda.ttf&quot;;
 padding: 2px;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="styleSheet">
+             <string notr="true">color:  rgb(0,0,0);
+font: 11pt &quot;asstes/font/monda.ttf&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Period:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="prepared_by_LE_2">
+            <property name="maximumSize">
+             <size>
+              <width>255</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: none;
+border-bottom: 1px solid rgb(0,0,0);
+background-color: rgba(5, 55, 66, 50);
+font: 12pt &quot;assets/font/monda.ttf&quot;;
+padding: 2px;</string>
+            </property>
+            <property name="placeholderText">
+             <string>mm dd, yyyy - mm dd, yyyy</string>
             </property>
            </widget>
           </item>
