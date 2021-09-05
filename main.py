@@ -212,16 +212,16 @@ class MainWindow(QMainWindow):
                                               """)
 
     def add_row(self):
-        rowCount = self.deductions_TBL.rowCount()
+        rowCount = self.ui.deductions_TBL.rowCount()
         self.ui.deductions_TBL.setRowCount(rowCount + 1)
 
-        if rowCount < 7:
+        if rowCount > 7:
             show_pop_up("Exceeded maximum number of deductions.")
             self.ui.deductions_TBL.setRowCount(7)
 
 
     def remove_specific_row(self):
-        self.ui.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
+        self.ui.deductions_TBL.removeRow(self.ui.deductions_TBL.currentRow())
 
     def stacked_widget_page(self, page):
         if page == 0:
