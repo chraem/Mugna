@@ -1,11 +1,8 @@
 from os import path, getcwd
-
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import NamedStyle, Font, Border, Side, Alignment, Fill, PatternFill
-# print(emp, employee_data)
-# 0 (1, 'q', 'q', 'q', 1.0, 1.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 1.0, 11.0, 1.0, 1.0, 14.0, '', 14.0)
 
-def generate_stub(company_name, employees, prepared_by, ws):
+def generate_stub(company_name, employees, period, prepared_by, ws):
     col_per_stub= 10
     row_per_stub= 22
 
@@ -40,6 +37,10 @@ def generate_stub(company_name, employees, prepared_by, ws):
     TN_RB= Border(right=TN, bottom=TN)
     TN_R= Border(right=TN)
 
+    # Alignment
+    LC_HV= Alignment(horizontal="left", vertical="center")
+    RC_HV= Alignment(horizontal="right", vertical="center")
+
     for emp, employee_data in enumerate(employees):
         # Outsets
         x_onset= emp % 2 * col_per_stub + 1
@@ -68,40 +69,105 @@ def generate_stub(company_name, employees, prepared_by, ws):
         #  4  # 23      # 22 + 23                # 45
 
         # Stub Labels
-        ws[x[2]+y[2]]= company_name;                               ws[x[2]+y[2]].font= ANB18
+        ws[x[2]+y[2]]= company_name
+        ws[x[2]+y[2]].font= ANB18
 
-        ws[x[2]+y[4]]= "Employee ID";                              ws[x[2]+y[4]].font= ANB12
-        ws[x[9]+y[4]]= "Period: ";                                 ws[x[9]+y[4]].font= ANN12
+        ws[x[9]+y[4]]= "Period: "+period
+        ws[x[9]+y[4]].font= ANN12;
 
-        ws[x[2]+y[6]]= "First Name";                               ws[x[2]+y[6]].font= ANN12
-        ws[x[5]+y[6]]= "Middle Name";                              ws[x[5]+y[6]].font= ANN12
-        ws[x[8]+y[6]]= "Last Name";                                ws[x[8]+y[6]].font= ANN12
+        ws[x[2]+y[4]]= "Employee ID"
+        ws[x[3]+y[4]]= employee_data[0]
+        ws[x[2]+y[4]].font= ws[x[3]+y[4]].font= ANB12
+        
+        ws[x[2]+y[6]]= "First Name"
+        ws[x[3]+y[6]]= employee_data[1]
+        ws[x[2]+y[6]].font= ws[x[3]+y[6]].font= ANN12
 
-        ws[x[2]+y[8]]= "Day Shift Hourly Rate";                    ws[x[2]+y[8]].font= ANN12
-        ws[x[5]+y[8]]= "Hour(s) Worked";                           ws[x[5]+y[8]].font= ANN12
-        ws[x[8]+y[8]]= "Total Day Shift Pay";                      ws[x[8]+y[8]].font= ANN12
+        ws[x[5]+y[6]]= "Middle Name"
+        ws[x[6]+y[6]]= employee_data[2]
+        ws[x[5]+y[6]].font= ws[x[6]+y[6]].font=ANN12
 
-        ws[x[2]+y[9]]= "Night Shift Hourly Rate";                  ws[x[2]+y[9]].font= ANN12
-        ws[x[5]+y[9]]= "Hour(s) Worked";                           ws[x[5]+y[9]].font= ANN12
-        ws[x[8]+y[9]]= "Total Night Shift Pay";                    ws[x[8]+y[9]].font= ANN12
+        ws[x[8]+y[6]]= "Last Name"
+        ws[x[9]+y[6]]= employee_data[3]
+        ws[x[8]+y[6]].font= ws[x[9]+y[6]].font=ANN12
 
-        ws[x[2]+y[10]]= "Holiday Hourly Rate";                     ws[x[2]+y[10]].font= ANN12
-        ws[x[5]+y[10]]= "Hour(s) Worked";                          ws[x[5]+y[10]].font= ANN12
-        ws[x[8]+y[10]]= "Total Holiday Pay";                       ws[x[8]+y[10]].font= ANN12
+        ws[x[2]+y[8]]= "Day Shift Hourly Rate"
+        ws[x[3]+y[8]]= employee_data[4]
+        ws[x[2]+y[8]].font=  ws[x[3]+y[8]].font= ANN12
 
-        ws[x[2]+y[11]]= "Overtime Hourly Rate";                    ws[x[2]+y[11]].font= ANN12
-        ws[x[5]+y[11]]= "Hour(s) Worked";                          ws[x[5]+y[11]].font= ANN12
-        ws[x[8]+y[11]]= "Total Overtime Pay";                      ws[x[8]+y[11]].font= ANN12
+        ws[x[5]+y[8]]= "Hour(s) Worked"
+        ws[x[6]+y[8]]= employee_data[8]
+        ws[x[5]+y[8]].font= ws[x[6]+y[8]].font= ANN12
 
-        ws[x[2]+y[13]]= "Deduction";                               ws[x[2]+y[13]].font= ANB12
-        ws[x[3]+y[13]]= "Amount";                                  ws[x[2]+y[14]].font= ANB12
+        ws[x[8]+y[8]]= "Total Day Shift Pay"
+        ws[x[9]+y[8]]= employee_data[12]
+        ws[x[8]+y[8]].font= ws[x[9]+y[8]].font= ANN12
 
-        ws[x[5]+y[13]]= "Gross Pay";                               ws[x[5]+y[13]].font= ANB12
-        ws[x[5]+y[14]]= "Total Deduction";                         ws[x[5]+y[13]].font= ANB12
-        ws[x[8]+y[13]]= "NET PAY";                                 ws[x[8]+y[13]].font= ANB12
+        ws[x[2]+y[9]]= "Night Shift Hourly Rate"
+        ws[x[3]+y[9]]= employee_data[5]
+        ws[x[2]+y[9]].font= ws[x[3]+y[9]].font= ANN12
 
-        ws[x[5]+y[18]]= "Received by ";                            ws[x[5]+y[18]].font= ANN12        
-        ws[x[8]+y[18]]= "Prepared by "+prepared_by;                ws[x[8]+y[18]].font= ANN12
+        ws[x[5]+y[9]]= "Hour(s) Worked"
+        ws[x[6]+y[9]]= employee_data[9]
+        ws[x[5]+y[9]].font= ws[x[6]+y[9]].font= ANN12
+
+        ws[x[8]+y[9]]= "Total Night Shift Pay"
+        ws[x[9]+y[9]]= employee_data[13]
+        ws[x[8]+y[9]].font= ws[x[9]+y[9]].font= ANN12
+
+        ws[x[2]+y[10]]= "Holiday Hourly Rate"
+        ws[x[3]+y[10]]= employee_data[6]
+        ws[x[2]+y[10]].font= ws[x[3]+y[10]].font= ANN12
+
+        ws[x[5]+y[10]]= "Hour(s) Worked"
+        ws[x[6]+y[10]]= employee_data[10]
+        ws[x[5]+y[10]].font= ws[x[6]+y[10]].font= ANN12
+
+        ws[x[8]+y[10]]= "Total Holiday Pay"
+        ws[x[9]+y[10]]= employee_data[14]
+        ws[x[8]+y[10]].font= ws[x[9]+y[10]].font= ANN12
+
+        ws[x[2]+y[11]]= "Overtime Hourly Rate"
+        ws[x[3]+y[11]]= employee_data[7]
+        ws[x[2]+y[11]].font= ws[x[3]+y[11]].font= ANN12
+
+        ws[x[5]+y[11]]= "Hour(s) Worked"
+        ws[x[6]+y[11]]= employee_data[11]
+        ws[x[5]+y[11]].font= ws[x[6]+y[11]].font= ANN12
+
+        ws[x[8]+y[11]]= "Total Overtime Pay"
+        ws[x[9]+y[11]]= employee_data[15]
+        ws[x[8]+y[11]].font= ws[x[9]+y[11]].font= ANN12
+
+        ws[x[5]+y[13]]= "Gross Pay"
+        ws[x[6]+y[13]]= employee_data[16]
+        ws[x[5]+y[13]].font= ws[x[6]+y[13]].font= ANB12
+
+        ws[x[5]+y[14]]= "Total Deduction"
+        ws[x[6]+y[14]]= employee_data[17]
+        ws[x[5]+y[14]].font= ws[x[6]+y[14]].font= ANB12
+
+        ws[x[8]+y[13]]= "NET PAY"
+        ws[x[9]+y[13]]= employee_data[18]
+        ws[x[8]+y[13]].font= ws[x[9]+y[13]].font= ANB12
+        
+        ws[x[2]+y[13]]= "Deduction"
+        ws[x[2]+y[13]].font= ANB12
+
+        ws[x[3]+y[13]]= "Amount"
+        ws[x[2]+y[14]].font= ANB12
+
+        fullname = "{} {} {}".format(
+            (employee_data[3].strip()+"," if employee_data[3] != "" else ""),
+            (employee_data[1].strip()),
+            ("".join(i[0]+"." for i in employee_data[2].split())),
+            )
+
+        ws[x[5]+y[18]]= "Received by "+fullname
+        ws[x[5]+y[18]].font= ANN12        
+
+        ws[x[8]+y[18]]= "Prepared by "+prepared_by
+        ws[x[8]+y[18]].font= ANN12
 
         # Fills
         for col in range(2, col_per_stub):
@@ -159,10 +225,10 @@ def generate_stub(company_name, employees, prepared_by, ws):
                 ws[x[col]+y[row]].border= TN_R
 
         # Signature Line
-        ws.merge_cells(x[5]+y[19]+":"+x[5]+y[19])
+        ws.merge_cells(x[5]+y[19]+":"+x[6]+y[19])
         ws.merge_cells(x[8]+y[19]+":"+x[9]+y[19])
-        ws[x[5]+y[19]].border=TN_B
-        ws[x[8]+y[19]].border=TN_B
+        ws[x[5]+y[19]].border= ws[x[6]+y[19]].border= TN_B
+        ws[x[8]+y[19]].border= ws[x[9]+y[19]].border= TN_B
 
         # Net Pay
         ws.merge_cells(x[8]+y[13]+":"+x[8]+y[14])
