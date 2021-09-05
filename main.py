@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
                     self.ui.gross_pay_LE, self.ui.total_deduction_LE, self.ui.net_pay_LE,
                     self.ui.day_rate_LE, self.ui.night_rate_LE, self.ui.holiday_rate_LE,
                     self.ui.ot_rate_LE, self.ui.day_worked_LE, self.ui.night_worked_LE,
-                    self.ui.holiday_worked_LE, self.ot_hours_LE, self.ui.total_day_pay_LE,
+                    self.ui.holiday_worked_LE, self.ui.ot_hours_LE, self.ui.total_day_pay_LE,
                     self.ui.total_night_pay_LE, self.ui.total_holiday_pay_LE, self.ui.total_ot_pay_LE,
                     self.ui.gross_pay_LE, self.ui.total_deduction_LE, self.ui.net_pay_LE
                    ]
@@ -127,7 +127,7 @@ class MainWindow(QMainWindow):
                 "net_pay": self.ui.net_pay_LE.text()
                 }
 
-                # Get the inputs from table widget
+            # Get inputs from table widget
             for row in range(self.ui.deductions_TBL.rowCount()):
                 deduction = self.ui.deductions_TBL.item(row, 0).text()
                 amount = self.ui.deductions_TBL.item(row, 1).text()
@@ -212,7 +212,13 @@ class MainWindow(QMainWindow):
                                               """)
 
     def add_row(self):
-        self.ui.deductions_TBL.setRowCount(self.deductions_TBL.rowCount()+ 1)
+        rowCount = self.deductions_TBL.rowCount()
+        self.ui.deductions_TBL.setRowCount(rowCount + 1)
+
+        if rowCount < 7:
+            show_pop_up("Exceeded maximum number of deductions.")
+            self.ui.deductions_TBL.setRowCount(7)
+
 
     def remove_specific_row(self):
         self.ui.deductions_TBL.removeRow(self.deductions_TBL.currentRow())
