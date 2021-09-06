@@ -357,15 +357,15 @@ class MainWindow(QMainWindow):
         self.ui.notification_LBL.setVisible(False)
 
 
-def validate(widget_type: str, data_type: str):
+def validate(widget: str, data_type: str):
     if data_type == "int":
-        widget_type.setValidator(QIntValidator())
+        widget.setValidator(QIntValidator())
     elif data_type == "float":
-        widget_type.setValidator(QDoubleValidator(decimals=2))
+        widget.setValidator(QDoubleValidator(decimals=2))
     elif data_type == "name":
-        widget_type.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.]+"), line_edit))
+        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.-]+"), line_edit))
     elif data_type == "date":
-        widget_type.setValidator(QRegExpValidator(QRegExp("[\\w\\s\\d'.,-/]+"), line_edit))
+        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s\\d'.,-/]+"), line_edit))
 
 def show_pop_up(message: str):
     pop_up = QMessageBox()
