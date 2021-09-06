@@ -39,6 +39,8 @@ class MainWindow(QMainWindow):
         validate(self.ui.ot_hours_LE, "float")
         validate(self.ui.holiday_worked_LE, "float")
 
+        validate(self.ui.period_LE, "date")
+
         self.stacked_widget_page(0)
         self.ui.report_TBL.setRowCount(0)
         self.ui.calculator.setVisible(visible)
@@ -212,10 +214,9 @@ class MainWindow(QMainWindow):
                                               """)
 
     def add_row(self):
-        rowCount = self.ui.deductions_TBL.rowCount()
-        self.ui.deductions_TBL.setRowCount(rowCount + 1)
+        self.ui.deductions_TBL.setRowCount(self.ui.deductions_TBL.rowCount() + 1)
 
-        if rowCount > 7:
+        if self.ui.deductions_TBL.rowCount() > 7:
             show_pop_up("Exceeded maximum number of deductions.")
             self.ui.deductions_TBL.setRowCount(7)
 
@@ -356,13 +357,15 @@ class MainWindow(QMainWindow):
         self.ui.notification_LBL.setVisible(False)
 
 
-def validate(line_edit: str, data_type: str):
+def validate(widget_type: str, data_type: str):
     if data_type == "int":
-        line_edit.setValidator(QIntValidator())
+        widget_type.setValidator(QIntValidator())
     elif data_type == "float":
-        line_edit.setValidator(QDoubleValidator(decimals=2))
+        widget_type.setValidator(QDoubleValidator(decimals=2))
     elif data_type == "name":
-        line_edit.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.]+"), line_edit))
+        widget_type.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.]+"), line_edit))
+    elif data_type == "date":
+        widget_type.setValidator(QRegExpValidator(QRegExp("[\\w\\s\\d'.,-/]+"), line_edit))
 
 def show_pop_up(message: str):
     pop_up = QMessageBox()
