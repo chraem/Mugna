@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainWindowxKKFwQ.ui'
+## Form generated from reading UI file 'mainWindowisSXMZ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         icon = QIcon()
         icon.addFile(u":/images/cat.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
-        MainWindow.setStyleSheet(u"background-color: rgb(232, 240, 242);")
+        MainWindow.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         self.inputs = QFrame(self.centralwidget)
         self.inputs.setObjectName(u"inputs")
         self.inputs.setMinimumSize(QSize(0, 0))
-        self.inputs.setStyleSheet(u"background-color: rgb(232, 240, 242);")
+        self.inputs.setStyleSheet(u"")
         self.inputs.setFrameShape(QFrame.NoFrame)
         self.inputs.setFrameShadow(QFrame.Plain)
         self.verticalLayout_3 = QVBoxLayout(self.inputs)
@@ -126,6 +126,27 @@ class Ui_MainWindow(object):
         self.report_BTN.setFlat(True)
 
         self.horizontalLayout_3.addWidget(self.report_BTN)
+
+        self.delete_BTN = QPushButton(self.frame_5)
+        self.delete_BTN.setObjectName(u"delete_BTN")
+        sizePolicy1.setHeightForWidth(self.delete_BTN.sizePolicy().hasHeightForWidth())
+        self.delete_BTN.setSizePolicy(sizePolicy1)
+        self.delete_BTN.setMinimumSize(QSize(80, 25))
+        self.delete_BTN.setCursor(QCursor(Qt.PointingHandCursor))
+        self.delete_BTN.setStyleSheet(u"QPushButton{\n"
+"	background-color: rgb(5, 55, 66);\n"
+"	border-radius: 5px;\n"
+"	color: rgb(255, 255, 255);\n"
+"	font: bold 12pt \"assets/font/monda.ttf\";\n"
+"	padding: 2px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color:rgb(57, 162, 219) ;\n"
+"}")
+        self.delete_BTN.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.delete_BTN)
 
         self.back_BTN = QPushButton(self.frame_5)
         self.back_BTN.setObjectName(u"back_BTN")
@@ -861,48 +882,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
-        self.prev_BTN = QPushButton(self.frame_4)
-        self.prev_BTN.setObjectName(u"prev_BTN")
-        sizePolicy1.setHeightForWidth(self.prev_BTN.sizePolicy().hasHeightForWidth())
-        self.prev_BTN.setSizePolicy(sizePolicy1)
-        self.prev_BTN.setMinimumSize(QSize(80, 25))
-        self.prev_BTN.setCursor(QCursor(Qt.PointingHandCursor))
-        self.prev_BTN.setStyleSheet(u"QPushButton{\n"
-"	background-color: rgb(5, 55, 66);\n"
-"	border-radius: 5px;\n"
-"	color: rgb(255, 255, 255);\n"
-"	font: bold 12pt \"assets/font/monda.ttf\";\n"
-"	padding: 2px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"	background-color:rgb(57, 162, 219) ;\n"
-"}")
-        self.prev_BTN.setFlat(True)
-
-        self.horizontalLayout_2.addWidget(self.prev_BTN)
-
-        self.next_BTN = QPushButton(self.frame_4)
-        self.next_BTN.setObjectName(u"next_BTN")
-        sizePolicy1.setHeightForWidth(self.next_BTN.sizePolicy().hasHeightForWidth())
-        self.next_BTN.setSizePolicy(sizePolicy1)
-        self.next_BTN.setMinimumSize(QSize(80, 25))
-        self.next_BTN.setCursor(QCursor(Qt.PointingHandCursor))
-        self.next_BTN.setStyleSheet(u"QPushButton{\n"
-"	background-color: rgb(5, 55, 66);\n"
-"	border-radius: 5px;\n"
-"	color: rgb(255, 255, 255);\n"
-"	font: bold 12pt \"assets/font/monda.ttf\";\n"
-"	padding: 2px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"	background-color:rgb(57, 162, 219) ;\n"
-"}")
-        self.next_BTN.setFlat(True)
-
-        self.horizontalLayout_2.addWidget(self.next_BTN)
-
         self.export_BTN = QPushButton(self.frame_4)
         self.export_BTN.setObjectName(u"export_BTN")
         sizePolicy1.setHeightForWidth(self.export_BTN.sizePolicy().hasHeightForWidth())
@@ -1471,7 +1450,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.emp_SW.setCurrentIndex(1)
+        self.emp_SW.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1483,6 +1462,7 @@ class Ui_MainWindow(object):
         self.clear_BTN.setText(QCoreApplication.translate("MainWindow", u"CLEAR", None))
         self.add_BTN.setText(QCoreApplication.translate("MainWindow", u"ADD", None))
         self.report_BTN.setText(QCoreApplication.translate("MainWindow", u"REPORT", None))
+        self.delete_BTN.setText(QCoreApplication.translate("MainWindow", u"DELETE", None))
         self.back_BTN.setText(QCoreApplication.translate("MainWindow", u"BACK", None))
         self.company_name_LBL.setText(QCoreApplication.translate("MainWindow", u"Company Name", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"Last Name", None))
@@ -1512,7 +1492,7 @@ class Ui_MainWindow(object):
         self.ot_rate_LE.setPlaceholderText(QCoreApplication.translate("MainWindow", u"0000.0", None))
         self.night_rate_LE.setPlaceholderText(QCoreApplication.translate("MainWindow", u"0000.0", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Total Day Shift Pay", None))
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Night Shift Hourly RAte", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Night Shift Hourly Rate", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Holiday Hourly Rate", None))
         self.holiday_rate_LE.setPlaceholderText(QCoreApplication.translate("MainWindow", u"0000.0", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"Total OT Pay", None))
@@ -1570,8 +1550,6 @@ class Ui_MainWindow(object):
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Period:", None))
         self.period_LE.setPlaceholderText(QCoreApplication.translate("MainWindow", u"mm dd, yyyy - mm dd, yyyy", None))
         self.notification_LBL.setText("")
-        self.prev_BTN.setText(QCoreApplication.translate("MainWindow", u"Prev", None))
-        self.next_BTN.setText(QCoreApplication.translate("MainWindow", u"Next", None))
         self.export_BTN.setText(QCoreApplication.translate("MainWindow", u"EXPORT", None))
         self.open_calc_BTN.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"CALCULATOR", None))
