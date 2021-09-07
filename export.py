@@ -40,6 +40,9 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
     # Alignment
     LC_HV= Alignment(horizontal="left", vertical="center")
     RC_HV= Alignment(horizontal="right", vertical="center")
+    CC_HV= Alignment(horizontal="center", vertical="center")
+    left= True
+    right= skip= False
 
     for emp, employee_data in enumerate(employees):
         # Outsets
@@ -244,6 +247,22 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
         # Net Pay
         ws.merge_cells(x[8]+y[13]+":"+x[8]+y[14])
         ws.merge_cells(x[9]+y[13]+":"+x[9]+y[14])
+
+        # Alignment
+        for col in range(2, col_per_stub):
+            if left == True and skip == False:
+                for row in range(1, row_per_stub):
+                    ws[x[col]+y[row]].alignment= LC_HV
+                right= True; left= False; skip= False
+            elif right == True:
+                for row in range(1, row_per_stub):
+                    ws[x[col]+y[row]].alignment= RC_HV
+                left= True; right= False; skip= True
+            elif skip == True:
+                continue
+
+        ws[x[2]+y[13]].alignment= ws[x[3]+y[13]].alignment= CC_HV
+
 
 def save_wb(workbook, filename):
 	workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
