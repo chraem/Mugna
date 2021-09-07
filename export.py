@@ -2,7 +2,7 @@ from os import path, getcwd
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import NamedStyle, Font, Border, Side, Alignment, Fill, PatternFill
 
-def generate_stub(company_name, employees, period, prepared_by, ws):
+def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
     col_per_stub= 10
     row_per_stub= 22
 
@@ -168,6 +168,17 @@ def generate_stub(company_name, employees, period, prepared_by, ws):
 
         ws[x[8]+y[18]]= "Prepared by "+prepared_by
         ws[x[8]+y[18]].font= ANN12
+
+        deduction_row = 14
+        status = 0
+        for deduction in deductions:
+            if deduction[0] == employee_data[0]:
+                ws[x[2]+y[deduction_row]]= deduction[1]
+                ws[x[3]+y[deduction_row]]= deduction[2]
+                deduction_row += 1
+                status = 1
+            elif deduction[0] != employee_data[0] and status == 1:
+                break
 
         # Fills
         for col in range(2, col_per_stub):

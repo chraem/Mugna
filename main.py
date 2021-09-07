@@ -54,7 +54,6 @@ class MainWindow(QMainWindow):
         self.ui.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
         self.ui.report_BTN.clicked.connect(self.show_report)
         
-
         self.ui.day_rate_LE.textChanged.connect(self.reload_total_day_pay)
         self.ui.night_rate_LE.textChanged.connect(self.reload_total_night_pay)
         self.ui.holiday_rate_LE.textChanged.connect(self.reload_total_holiday_pay)
@@ -234,8 +233,6 @@ class MainWindow(QMainWindow):
             self.ui.clear_BTN.setVisible(True)
             self.ui.label_6.setVisible(True)
             self.ui.prepared_by_LE.setVisible(True)
-            self.ui.prev_BTN.setVisible(True)
-            self.ui.next_BTN.setVisible(True)
             self.ui.company_name_LBL.setVisible(True)
             self.ui.company_name_LE.setVisible(True)
             self.ui.label_7.setVisible(True)
@@ -249,8 +246,6 @@ class MainWindow(QMainWindow):
             self.ui.report_BTN.setVisible(False)
             self.ui.label_6.setVisible(False)
             self.ui.prepared_by_LE.setVisible(False)
-            self.ui.prev_BTN.setVisible(False)
-            self.ui.next_BTN.setVisible(False)
             self.ui.company_name_LE.setVisible(False)
             self.ui.company_name_LBL.setVisible(False)
             self.ui.label_7.setVisible(False)
@@ -341,7 +336,9 @@ class MainWindow(QMainWindow):
 
         if c.execute("SELECT * FROM employees"):
             employees = c.fetchall()
-            generate_stub(company_name=company_name, employees=employees, period=period, prepared_by=prepared_by, ws=ws)
+            if c.execute("SELECT * FROM deductions"):
+                deductions = c.fetchall()
+                generate_stub(company_name=company_name, employees=employees, deductions=deductions, period=period, prepared_by=prepared_by, ws=ws)
         
         try:
             filename = date_and_time+"-Payroll Stub.xlsx"
@@ -363,9 +360,9 @@ def validate(widget: str, data_type: str):
     elif data_type == "float":
         widget.setValidator(QDoubleValidator(decimals=2))
     elif data_type == "name":
-        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.-]+"), line_edit))
+        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.-]+"), widget))
     elif data_type == "date":
-        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s\\d'.,-/]+"), line_edit))
+        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s\\d'.,-/]+"), widget))
 
 def show_pop_up(message: str):
     pop_up = QMessageBox()
