@@ -53,6 +53,7 @@ class MainWindow(QMainWindow):
         self.ui.add_deduction_BTN.clicked.connect(self.add_row)
         self.ui.remove_deduction_BTN.clicked.connect(self.remove_specific_row)
         self.ui.report_BTN.clicked.connect(self.show_report)
+        self.ui.delete_BTN.clicked.connect(self.delete_data)
         
         self.ui.day_rate_LE.textChanged.connect(self.reload_total_day_pay)
         self.ui.night_rate_LE.textChanged.connect(self.reload_total_night_pay)
@@ -223,12 +224,36 @@ class MainWindow(QMainWindow):
     def remove_specific_row(self):
         self.ui.deductions_TBL.removeRow(self.ui.deductions_TBL.currentRow())
 
+    def delete_data(self):
+        curr_row= self.ui.report_TBL.currentRow()
+        emp_ID= self.ui.report_TBL.item(curr_row, 0).text()
+
+        del_pop_up = QMessageBox()
+        del_pop_up.setWindowTitle("Warning")
+        del_pop_up.setText("Are you sure you want to delete the information of Employee #"+emp_ID)
+        del_pop_up.setIcon(QMessageBox.Warning)
+        del_pop_up.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        choice= del_pop_up.exec_()
+
+        try:
+            if choice == QMessageBox.Yes:
+                print(emp_ID, curr_row)
+                self.ui.report_TBL.removeRow(self.ui.report_TBL.currentRow())
+                if c.execute("DELETE FROM employees WHERE id ={}".format(emp_ID)):
+                    conn.commit()
+                if c.execute("DELETE FROM deductions WHERE id ={}".format(emp_ID)):
+                    conn.commit()
+            else:
+                del_pop_up.done(1)
+        except:
+            show_pop_up("Failed to delete.")
+
     def stacked_widget_page(self, page):
         if page == 0:
             self.ui.emp_SW.setCurrentIndex(0)
             self.ui.export_BTN.setVisible(False)
             self.ui.back_BTN.setVisible(False)
-            self.ui.report_BTN.setVisible(True)
+            self.ui.delete_BTN.setVisible(False)
             self.ui.add_BTN.setVisible(True)
             self.ui.clear_BTN.setVisible(True)
             self.ui.label_6.setVisible(True)
@@ -237,10 +262,12 @@ class MainWindow(QMainWindow):
             self.ui.company_name_LE.setVisible(True)
             self.ui.label_7.setVisible(True)
             self.ui.period_LE.setVisible(True)
+            self.ui.report_BTN.setVisible(True)
         else:
             self.ui.emp_SW.setCurrentIndex(1)
             self.ui.export_BTN.setVisible(True)
             self.ui.back_BTN.setVisible(True)
+            self.ui.delete_BTN.setVisible(True)
             self.ui.clear_BTN.setVisible(False)
             self.ui.add_BTN.setVisible(False)
             self.ui.report_BTN.setVisible(False)
