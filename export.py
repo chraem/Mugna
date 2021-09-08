@@ -44,6 +44,9 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
     left= True
     right= skip= False
 
+    # Shorter rows
+    short_rows= [1, 3, 5, 7, 22]
+
     for emp, employee_data in enumerate(employees):
         # Outsets
         x_onset= emp % 2 * col_per_stub + 1
@@ -64,7 +67,7 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
 
         y= [str(row_number) for row_number in range(y_onset, row_per_stub + y_onset)]
         y.insert(0,'-')
-        # emp # y_onset # row_per_stub + y_onset # row_number starts at
+        # emp # y_onset # row_per_stub + y_onset # row_number ends at
         #  0  # 1       # 22 + 1                 # 23
         #  1  # 1       # 22 + 1                 # 23
         #  2  # 12      # 22 + 12                # 34
@@ -263,6 +266,9 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
 
         ws[x[2]+y[13]].alignment= ws[x[3]+y[13]].alignment= CC_HV
 
+        # Row width
+        for row in short_rows:
+            ws.row_dimensions[int(y[row])].height= 5
 
 def save_wb(workbook, filename):
 	workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
