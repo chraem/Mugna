@@ -4,8 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyside2 = "*"
+pyside2 = "5.15.2"
 openpyxl = "3.0.7"
+msoffcrypto-tool = "4.12.0"
 
 [dev-packages]
 
