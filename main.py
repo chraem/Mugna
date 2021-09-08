@@ -1,9 +1,11 @@
 import sys
 import sqlite3
 import subprocess
+from io import BytesIO
 from datetime import datetime
 from os import path, getenv, getcwd
 from openpyxl import Workbook, load_workbook
+from msoffcrypto import OfficeFile
 
 from PySide2.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem
 from PySide2.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
@@ -358,7 +360,14 @@ class MainWindow(QMainWindow):
         prepared_by = self.ui.prepared_by_LE.text()
         period = self.ui.period_LE.text()
 
-        wb = load_workbook(path.normpath(getcwd()+"/mugna/assets/basis.xlsx"))
+        decrypted_basis= BytesIO()
+
+        with open(path.normpath(getcwd()+"/mugna/assets/basis.xlsx"), "rb") as file:
+            basis_file= OfficeFile(file)
+            basis_file.load_key(password= "chraem1224")
+            basis_file.decrypt(decrypted_basis)
+
+        wb = load_workbook(filename=decrypted_basis)
         ws = wb.active
 
         if c.execute("SELECT * FROM employees"):
