@@ -12,7 +12,7 @@ from PySide2.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
 from PySide2.QtCore import QRegExp, QTimer
 
 from mugna.assets import main_images_rc, ui_mainWindow
-from export import generate_stub, save_wb
+from export import generate_stub, save_wb, quantise
 
 deductions_DICT, visible = {}, False
 
@@ -177,7 +177,7 @@ class MainWindow(QMainWindow):
             elif self.ui.id_emp_LE.text() == "":
                 show_pop_up("ID field cannot be empty!")
             else:
-                show_pop_up("An error occurred")
+                show_pop_up("An error had occurred.")
 
     def show_report(self):
         """
@@ -192,7 +192,7 @@ class MainWindow(QMainWindow):
 
             for row, emp_in_row in enumerate(emps):
                 for in_row, emp_data in enumerate(emp_in_row):
-                    self.ui.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else "None"))
+                    self.ui.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else ""))
 
     def calculator_visibility(self):
         """
@@ -286,32 +286,40 @@ class MainWindow(QMainWindow):
         """
         Updates the line edit for total day pay each time the line edits for day rate and worked changed.
         """
-        day_rate = float(self.ui.day_rate_LE.text()) if self.ui.day_rate_LE.text() != "" else 0.0
-        day_worked = float(self.ui.day_worked_LE.text()) if self.ui.day_worked_LE.text() != "" else 0.0
+        dr= self.ui.day_rate_LE.text()
+        dw= self.ui.day_worked_LE.text()
+        day_rate = float(dr) if dr != "" and dr != "." else 0.0
+        day_worked = float(dw) if dw != "" and dw != "." else 0.0
         self.ui.total_day_pay_LE.setText(str(day_rate*day_worked))
 
     def reload_total_night_pay(self):
         """
         Updates the line edit for total night pay each time the line edits for night rate and worked changed.
         """
-        night_rate = float(self.ui.night_rate_LE.text()) if self.ui.night_rate_LE.text() != "" else 0.0
-        night_worked = float(self.ui.night_worked_LE.text()) if self.ui.night_worked_LE.text() != "" else 0.0
+        nr= self.ui.night_rate_LE.text()
+        nw= self.ui.night_worked_LE.text()
+        night_rate = float(nr) if nr != "" and nr != "." else 0.0
+        night_worked = float(nw) if nw != "" and nw != "." else 0.0
         self.ui.total_night_pay_LE.setText(str(night_rate*night_worked))
 
     def reload_total_holiday_pay(self):
         """
         Updates the line edit for total holiday pay each time the line edits for holiday rate and worked changed.
         """
-        holiday_rate = float(self.ui.holiday_rate_LE.text()) if self.ui.holiday_rate_LE.text() != "" else 0.0
-        holiday_worked = float(self.ui.holiday_worked_LE.text()) if self.ui.holiday_worked_LE.text() != "" else 0.0
+        hr= self.ui.holiday_rate_LE.text()
+        hw= self.ui.holiday_worked_LE.text()
+        holiday_rate = float(hr) if hr != "" and hr != "." else 0.0
+        holiday_worked = float(hw) if hw != "" and hw != "." else 0.0
         self.ui.total_holiday_pay_LE.setText(str(holiday_rate*holiday_worked))
 
     def reload_total_ot_pay(self):
         """
         Updates the line edit for total ot pay each time the line edits for ot rate and worked changed.
         """
-        ot_rate = float(self.ui.ot_rate_LE.text()) if self.ui.ot_rate_LE.text() != "" else 0.0
-        ot_worked = float(self.ui.ot_hours_LE.text()) if self.ui.ot_hours_LE.text() != "" else 0.0
+        otr= self.ui.ot_rate_LE.text()
+        otw= self.ui.ot_hours_LE.text()
+        ot_rate = float(otr) if otr != "" and otr != "." else 0.0
+        ot_worked = float(otw) if otw != "" and otw != "." else 0.0
         self.ui.total_ot_pay_LE.setText(str(ot_rate*ot_worked))
 
     def reload_gross_pay(self):
@@ -381,9 +389,6 @@ class MainWindow(QMainWindow):
         try:
             filename = date_and_time+"-Payroll Stub.xlsx"
             save_wb(wb, filename)
-            self.ui.notification_LBL.setText("Exported successfully.")
-            self.ui.notification_LBL.setVisible(True)
-            QTimer.singleShot(1500, self.show_notification_LBL)
             open_file_explorer(filename)
         except:
             show_pop_up("Failed to export.")
