@@ -7,7 +7,7 @@ from os import path, getenv, getcwd
 from openpyxl import Workbook, load_workbook
 from msoffcrypto import OfficeFile
 
-from PySide2.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem
+from PySide2.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem, QItemDelegate, QDoubleSpinBox, QLineEdit
 from PySide2.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
 from PySide2.QtCore import QRegExp, QTimer
 
@@ -43,6 +43,8 @@ class MainWindow(QMainWindow):
 
         validate(self.ui.period_LE, "date")
 
+        self.ui.deductions_TBL.setItemDelegateForColumn(1, amount_delegate())
+        
         self.stacked_widget_page(0)
         self.ui.report_TBL.setRowCount(0)
         self.ui.calculator.setVisible(visible)
@@ -389,16 +391,21 @@ class MainWindow(QMainWindow):
     def show_notification_LBL(self):
         self.ui.notification_LBL.setVisible(False)
 
-
+class amount_delegate(QItemDelegate):
+    def createEditor(self, parent, option, index):
+        amount_LE= QLineEdit(parent)
+        validate(amount_LE, "float")
+        return amount_LE
+    
 def validate(widget: str, data_type: str):
     if data_type == "int":
         widget.setValidator(QIntValidator())
     elif data_type == "float":
         widget.setValidator(QDoubleValidator(decimals=2))
     elif data_type == "name":
-        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s'.-]+"), widget))
+        widget.setValidator(QRegExpValidator(QRegExp("[-\\w\\s'.]+"), widget))
     elif data_type == "date":
-        widget.setValidator(QRegExpValidator(QRegExp("[\\w\\s\\d'.,-/]+"), widget))
+        widget.setValidator(QRegExpValidator(QRegExp("[-\\w\\s\\d'.,/]+"), widget))
 
 def show_pop_up(message: str):
     pop_up = QMessageBox()
@@ -418,7 +425,6 @@ def open_file_explorer(filename: str):
         show_pop_up("Failed to load File Explorer. File is saved as " 
             + filename + " in " 
             + (path.normpath(getcwd()+"/mugna/exports")))
-
 
 def close_db():
     conn.close()
