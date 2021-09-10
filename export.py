@@ -2,7 +2,7 @@ from os import path, getcwd
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import NamedStyle, Font, Border, Side, Alignment, Fill, PatternFill
 
-def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
+def generate_stub(company_name: str, employees: str, deductions: list, period: str, prepared_by: str, ws):
     col_per_stub= 10
     row_per_stub= 22
 
@@ -41,8 +41,6 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
     LC_HV= Alignment(horizontal="left", vertical="center")
     RC_HV= Alignment(horizontal="right", vertical="center")
     CC_HV= Alignment(horizontal="center", vertical="center")
-    left= True
-    right= skip= False
 
     # Shorter rows
     short_rows= [1, 3, 5, 7, 22]
@@ -98,63 +96,63 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
         ws[x[8]+y[6]].font= ws[x[9]+y[6]].font=ANN12
 
         ws[x[2]+y[8]]= "Day Shift Hourly Rate"
-        ws[x[3]+y[8]]= employee_data[4]
+        ws[x[3]+y[8]]= convert(employee_data[4])
         ws[x[2]+y[8]].font=  ws[x[3]+y[8]].font= ANN12
 
         ws[x[5]+y[8]]= "Hour(s) Worked"
-        ws[x[6]+y[8]]= employee_data[8]
+        ws[x[6]+y[8]]= convert(employee_data[8])
         ws[x[5]+y[8]].font= ws[x[6]+y[8]].font= ANN12
 
         ws[x[8]+y[8]]= "Total Day Shift Pay"
-        ws[x[9]+y[8]]= employee_data[12]
+        ws[x[9]+y[8]]= convert(employee_data[12])
         ws[x[8]+y[8]].font= ws[x[9]+y[8]].font= ANN12
 
         ws[x[2]+y[9]]= "Night Shift Hourly Rate"
-        ws[x[3]+y[9]]= employee_data[5]
+        ws[x[3]+y[9]]= convert(employee_data[5])
         ws[x[2]+y[9]].font= ws[x[3]+y[9]].font= ANN12
 
         ws[x[5]+y[9]]= "Hour(s) Worked"
-        ws[x[6]+y[9]]= employee_data[9]
+        ws[x[6]+y[9]]= convert(employee_data[9])
         ws[x[5]+y[9]].font= ws[x[6]+y[9]].font= ANN12
 
         ws[x[8]+y[9]]= "Total Night Shift Pay"
-        ws[x[9]+y[9]]= employee_data[13]
+        ws[x[9]+y[9]]= convert(employee_data[13])
         ws[x[8]+y[9]].font= ws[x[9]+y[9]].font= ANN12
 
         ws[x[2]+y[10]]= "Holiday Hourly Rate"
-        ws[x[3]+y[10]]= employee_data[6]
+        ws[x[3]+y[10]]= convert(employee_data[6])
         ws[x[2]+y[10]].font= ws[x[3]+y[10]].font= ANN12
 
         ws[x[5]+y[10]]= "Hour(s) Worked"
-        ws[x[6]+y[10]]= employee_data[10]
+        ws[x[6]+y[10]]= convert(employee_data[10])
         ws[x[5]+y[10]].font= ws[x[6]+y[10]].font= ANN12
 
         ws[x[8]+y[10]]= "Total Holiday Pay"
-        ws[x[9]+y[10]]= employee_data[14]
+        ws[x[9]+y[10]]= convert(employee_data[14])
         ws[x[8]+y[10]].font= ws[x[9]+y[10]].font= ANN12
 
         ws[x[2]+y[11]]= "Overtime Hourly Rate"
-        ws[x[3]+y[11]]= employee_data[7]
+        ws[x[3]+y[11]]= convert(employee_data[7])
         ws[x[2]+y[11]].font= ws[x[3]+y[11]].font= ANN12
 
         ws[x[5]+y[11]]= "Hour(s) Worked"
-        ws[x[6]+y[11]]= employee_data[11]
+        ws[x[6]+y[11]]= convert(employee_data[11])
         ws[x[5]+y[11]].font= ws[x[6]+y[11]].font= ANN12
 
         ws[x[8]+y[11]]= "Total Overtime Pay"
-        ws[x[9]+y[11]]= employee_data[15]
+        ws[x[9]+y[11]]= convert(employee_data[15])
         ws[x[8]+y[11]].font= ws[x[9]+y[11]].font= ANN12
 
         ws[x[5]+y[13]]= "Gross Pay"
-        ws[x[6]+y[13]]= employee_data[16]
+        ws[x[6]+y[13]]= convert(employee_data[16])
         ws[x[5]+y[13]].font= ws[x[6]+y[13]].font= ANB12
 
         ws[x[5]+y[14]]= "Total Deduction"
-        ws[x[6]+y[14]]= employee_data[17]
+        ws[x[6]+y[14]]= convert(employee_data[17])
         ws[x[5]+y[14]].font= ws[x[6]+y[14]].font= ANB12
 
         ws[x[8]+y[13]]= "NET PAY"
-        ws[x[9]+y[13]]= employee_data[18]
+        ws[x[9]+y[13]]= convert(employee_data[18])
         ws[x[8]+y[13]].font= ws[x[9]+y[13]].font= ANB12
         
         ws[x[2]+y[13]]= "Deduction"
@@ -251,18 +249,23 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
         ws.merge_cells(x[8]+y[13]+":"+x[8]+y[14])
         ws.merge_cells(x[9]+y[13]+":"+x[9]+y[14])
 
-        # Alignment
+        # Alignment and Number Format
+        left= True
+        right= skip= False
+
         for col in range(2, col_per_stub):
-            if left == True and skip == False:
-                for row in range(1, row_per_stub):
+            if left == True and right == False and skip == False:
+                for row in range(8, row_per_stub):
                     ws[x[col]+y[row]].alignment= LC_HV
-                right= True; left= False; skip= False
-            elif right == True:
-                for row in range(1, row_per_stub):
+                    print("L > "+ x[col]+y[row])
+                left= False; right= True; skip= False
+            elif right == True and left == False and skip == False:
+                for row in range(8, row_per_stub):
                     ws[x[col]+y[row]].alignment= RC_HV
+                    print("R >"+ x[col]+y[row])
                 left= True; right= False; skip= True
-            elif skip == True:
-                continue
+            elif right == True and left == False and skip == True:
+                left= True; right= False; skip= False
 
         ws[x[2]+y[13]].alignment= ws[x[3]+y[13]].alignment= CC_HV
 
@@ -270,5 +273,8 @@ def generate_stub(company_name, employees, deductions, period, prepared_by, ws):
         for row in short_rows:
             ws.row_dimensions[int(y[row])].height= 5
 
-def save_wb(workbook, filename):
+def save_wb(workbook, filename: str):
 	workbook.save(path.normpath(getcwd()+"/mugna/exports/"+filename))
+
+def convert(data: str):
+    return 0.00 if data == "" else data
