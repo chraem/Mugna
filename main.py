@@ -48,7 +48,6 @@ class MainWindow(QMainWindow):
         
         self.stacked_widget_page(0)
         self.ui.report_TBL.setRowCount(0)
-        self.ui.calculator.setVisible(visible)
 
         self.ui.clear_BTN.clicked.connect(self.clear_data)
         self.ui.add_BTN.clicked.connect(self.add_data)
@@ -78,8 +77,6 @@ class MainWindow(QMainWindow):
         self.ui.gross_pay_LE.textChanged.connect(self.reload_net_pay)
         self.ui.total_deduction_LE.textChanged.connect(self.reload_net_pay)
         self.ui.deductions_TBL.itemChanged.connect(self.reload_total_deduction)
-
-        self.ui.open_calc_BTN.clicked.connect(self.calculator_visibility)
 
         self.show()
 
@@ -191,32 +188,12 @@ class MainWindow(QMainWindow):
 
             self.ui.report_TBL.setRowCount(len(emps))
 
-            for row, emp_in_row in enumerate(emps):
+            for row, emp_in_row in enumerate(emps):               
                 for in_row, emp_data in enumerate(emp_in_row):
-                    self.ui.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else ""))
-
-    def calculator_visibility(self):
-        """
-        Hides and show the calculator frame.
-        """
-        global visible
-
-        if visible == False:
-            self.ui.calculator.setVisible(True); visible = True
-            self.ui.open_calc_BTN.setStyleSheet("""QPushButton{image: url(:/images/close.png);
-                                                 background-color: rgb(5, 55, 66);
-                                                 border-radius: 5px;
-                                                 padding: 2px; padding-right:8px;}
-                                                 QPushButton:hover{padding-right: 8px;}
-                                              """)
-        else:
-            self.ui.calculator.setVisible(False); visible = False
-            self.ui.open_calc_BTN.setStyleSheet("""QPushButton{image: url(:/images/open.png);
-                                                 background-color: rgb(5, 55, 66);
-                                                 border-radius: 5px;
-                                                 padding: 2px; padding-right:8px;}
-                                                 QPushButton:hover{padding-right: 8px;}
-                                              """)
+                    if in_row <= 3:
+                        self.ui.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else ""))
+                    else:
+                        self.ui.report_TBL.setItem(row, in_row, QTableWidgetItem(str(emp_in_row[in_row]) if str(emp_in_row[in_row]) != "" else "0.0"))
 
     def add_row(self):
         self.ui.deductions_TBL.setRowCount(self.ui.deductions_TBL.rowCount() + 1)
@@ -415,7 +392,6 @@ def set_value(widget):
 def quantise(data: float):
     return Decimal(data).quantize(Decimal('0.01'))
 
-
 def set_item(item):
     if item == None or item.text() == "":
         return 0.0
@@ -435,7 +411,6 @@ def open_file_explorer(filename: str):
 
 def close_db():
     conn.close()
-
 
 conn = sqlite3.connect("mugna/database/stub.sqlite")
 c = conn.cursor()
