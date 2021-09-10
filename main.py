@@ -3,16 +3,17 @@ import sqlite3
 import subprocess
 from io import BytesIO
 from datetime import datetime
+from decimal import Decimal
 from os import path, getenv, getcwd
 from openpyxl import Workbook, load_workbook
 from msoffcrypto import OfficeFile
 
-from PySide2.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem, QItemDelegate, QDoubleSpinBox, QLineEdit
+from PySide2.QtWidgets import QMainWindow, QApplication, QWidget, QMessageBox, QTableWidgetItem, QItemDelegate, QLineEdit
 from PySide2.QtGui import QRegExpValidator, QIntValidator, QDoubleValidator
 from PySide2.QtCore import QRegExp, QTimer
 
 from mugna.assets import main_images_rc, ui_mainWindow
-from export import generate_stub, save_wb, quantise
+from export import generate_stub, save_wb
 
 deductions_DICT, visible = {}, False
 
@@ -286,52 +287,46 @@ class MainWindow(QMainWindow):
         """
         Updates the line edit for total day pay each time the line edits for day rate and worked changed.
         """
-        dr= self.ui.day_rate_LE.text()
-        dw= self.ui.day_worked_LE.text()
-        day_rate = float(dr) if dr != "" and dr != "." else 0.0
-        day_worked = float(dw) if dw != "" and dw != "." else 0.0
-        self.ui.total_day_pay_LE.setText(str(day_rate*day_worked))
+        total_day_pay= quantise(set_value(self.ui.day_rate_LE)) * quantise(set_value(self.ui.day_worked_LE))
+        self.ui.total_day_pay_LE.setText(str(quantise(total_day_pay)))
 
     def reload_total_night_pay(self):
         """
         Updates the line edit for total night pay each time the line edits for night rate and worked changed.
         """
-        nr= self.ui.night_rate_LE.text()
-        nw= self.ui.night_worked_LE.text()
-        night_rate = float(nr) if nr != "" and nr != "." else 0.0
-        night_worked = float(nw) if nw != "" and nw != "." else 0.0
-        self.ui.total_night_pay_LE.setText(str(night_rate*night_worked))
+        total_night_pay= quantise(set_value(self.ui.night_rate_LE)) * quantise(set_value(self.ui.night_worked_LE))
+        self.ui.total_night_pay_LE.setText(str(quantise(total_night_pay)))
 
     def reload_total_holiday_pay(self):
         """
         Updates the line edit for total holiday pay each time the line edits for holiday rate and worked changed.
         """
-        hr= self.ui.holiday_rate_LE.text()
-        hw= self.ui.holiday_worked_LE.text()
-        holiday_rate = float(hr) if hr != "" and hr != "." else 0.0
-        holiday_worked = float(hw) if hw != "" and hw != "." else 0.0
-        self.ui.total_holiday_pay_LE.setText(str(holiday_rate*holiday_worked))
+        total_holiday_pay = quantise(set_value(self.ui.holiday_rate_LE)) * quantise(set_value(self.ui.holiday_worked_LE))
+        self.ui.total_holiday_pay_LE.setText(str(quantise(total_holiday_pay)))
 
     def reload_total_ot_pay(self):
         """
         Updates the line edit for total ot pay each time the line edits for ot rate and worked changed.
         """
-        otr= self.ui.ot_rate_LE.text()
-        otw= self.ui.ot_hours_LE.text()
-        ot_rate = float(otr) if otr != "" and otr != "." else 0.0
-        ot_worked = float(otw) if otw != "" and otw != "." else 0.0
-        self.ui.total_ot_pay_LE.setText(str(ot_rate*ot_worked))
+        total_ot_pay = quantise(set_value(self.ui.ot_rate_LE)) * quantise(set_value(self.ui.ot_hours_LE))
+        self.ui.total_ot_pay_LE.setText(str(quantise(total_ot_pay)))
 
     def reload_gross_pay(self):
         """
         Updates the line edit for gross pay each time the line edits for totals changed.
         """
-        self.ui.gross_pay_LE.setText(str(
-              (float(self.ui.total_day_pay_LE.text())     if self.ui.total_day_pay_LE.text() != "" else 0.0)
-            + (float(self.ui.total_night_pay_LE.text())   if self.ui.total_night_pay_LE.text() != "" else 0.0)
-            + (float(self.ui.total_holiday_pay_LE.text()) if self.ui.total_holiday_pay_LE.text() != "" else 0.0)
-            + (float(self.ui.total_ot_pay_LE.text())      if self.ui.total_ot_pay_LE.text() != "" else 0.0)
-                                  ))
+        gross_pay = (quantise(set_value(self.ui.total_day_pay_LE))
+                    + quantise(set_value(self.ui.total_night_pay_LE))
+                    + quantise(set_value(self.ui.total_holiday_pay_LE))
+                    + quantise(set_value(self.ui.total_ot_pay_LE)))
+        self.ui.gross_pay_LE.setText(str(quantise(gross_pay)))
+        
+    def reload_net_pay(self):
+        """
+        Updates the line edit for total night pay each time the line edits for gross pay and total deduction changed.
+        """
+        net_pay = quantise(set_value(self.ui.gross_pay_LE)) - quantise(set_value(self.ui.total_deduction_LE))
+        self.ui.net_pay_LE.setText(str(quantise(net_pay)))
 
     def reload_total_deduction(self):
         """
@@ -341,25 +336,16 @@ class MainWindow(QMainWindow):
         num_of_row, deductions = self.ui.deductions_TBL.rowCount(), 0.0
 
         for row in range(num_of_row):
-            pre_deduction = self.ui.deductions_TBL.item(row, 0)
+            deduction_name = self.ui.deductions_TBL.item(row, 0)
             pre_amount = self.ui.deductions_TBL.item(row, 1)
 
-            deduction = self.ui.deductions_TBL.item(row, 0).text() if pre_deduction != None and pre_deduction.text() != "" else "Deduction"+str(row)
-            amount =  self.ui.deductions_TBL.item(row, 1).text() if pre_amount != None and pre_amount.text() else 0.0
+            deduction = self.ui.deductions_TBL.item(row, 0).text() if deduction_name != None and deduction_name.text() != "" else "Deduction"+str(row)
+            amount =  set_item(self.ui.deductions_TBL.item(row, 1))
 
             deductions_DICT[deduction] = amount
             deductions += float(deductions_DICT[deduction])
 
         self.ui.total_deduction_LE.setText(str(deductions))
-
-    def reload_net_pay(self):
-        """
-        Updates the line edit for total night pay each time the line edits for gross pay and total deduction changed.
-        """
-        self.ui.net_pay_LE.setText(str(
-            (float(self.ui.gross_pay_LE.text()) if self.ui.gross_pay_LE.text() != "" else 0.0)
-            - (float(self.ui.total_deduction_LE.text()) if self.ui.total_deduction_LE.text() != "" else 0.0)
-            ))
 
     def export_data(self):
         """
@@ -406,7 +392,7 @@ def validate(widget: str, data_type: str):
     if data_type == "int":
         widget.setValidator(QIntValidator())
     elif data_type == "float":
-        widget.setValidator(QDoubleValidator(decimals=2))
+        widget.setValidator(QRegExpValidator(QRegExp("([\\d]+\\.?\\d{0,2})"), widget))
     elif data_type == "name":
         widget.setValidator(QRegExpValidator(QRegExp("[-\\w\\s'.]+"), widget))
     elif data_type == "date":
@@ -419,6 +405,22 @@ def show_pop_up(message: str):
     pop_up.setIcon(QMessageBox.Warning)
     pop_up.setStandardButtons(QMessageBox.Ok)
     pop_up.exec_()
+
+def set_value(widget):    
+    if widget.text() == "":
+        return 0.0
+    else:
+        return quantise(widget.text())
+
+def quantise(data: float):
+    return Decimal(data).quantize(Decimal('0.01'))
+
+
+def set_item(item):
+    if item == None or item.text() == "":
+        return 0.0
+    else:
+        return quantise(item.text())
 
 def open_file_explorer(filename: str):
     try:
