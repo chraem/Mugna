@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1166</width>
+    <width>1236</width>
     <height>566</height>
    </rect>
   </property>
@@ -569,7 +569,7 @@ padding: 2px;</string>
                  <bool>true</bool>
                 </property>
                 <property name="placeholderText">
-                 <string>0000.00</string>
+                 <string>00.00</string>
                 </property>
                </widget>
               </item>
@@ -618,7 +618,7 @@ padding: 2px;</string>
                  <bool>true</bool>
                 </property>
                 <property name="placeholderText">
-                 <string>0000.00</string>
+                 <string>00.00</string>
                 </property>
                </widget>
               </item>
@@ -657,7 +657,7 @@ padding: 2px;</string>
                  <bool>true</bool>
                 </property>
                 <property name="placeholderText">
-                 <string>0000.00</string>
+                 <string>00.00</string>
                 </property>
                </widget>
               </item>
@@ -749,7 +749,7 @@ background-color: rgba(5, 55, 66, 50);
 padding: 2px;</string>
                       </property>
                       <property name="placeholderText">
-                       <string>00.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -759,7 +759,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Hour Worked</string>
+                       <string>Hour(s) Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -791,7 +791,7 @@ padding: 2px;</string>
                        <bool>true</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.00</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -810,7 +810,7 @@ padding: 2px;</string>
                        <bool>true</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.00</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -820,7 +820,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Hour Worked</string>
+                       <string>Hour(s) Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -843,7 +843,7 @@ background-color: rgba(5, 55, 66, 50);
 padding: 2px;</string>
                       </property>
                       <property name="placeholderText">
-                       <string>00.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -856,7 +856,7 @@ background-color: rgba(5, 55, 66, 50);
 padding: 2px;</string>
                       </property>
                       <property name="placeholderText">
-                       <string>00.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -885,7 +885,7 @@ padding: 2px;</string>
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -895,7 +895,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Hour Worked</string>
+                       <string>Hour(s) Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -911,7 +911,7 @@ padding: 2px;</string>
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -927,7 +927,7 @@ padding: 2px;</string>
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -973,7 +973,7 @@ padding: 2px;</string>
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -1002,7 +1002,7 @@ padding: 2px;</string>
                        <bool>true</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.00</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -1031,7 +1031,7 @@ padding: 2px;</string>
                        <bool>true</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>0000.00</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -1041,7 +1041,7 @@ padding: 2px;</string>
                        <string notr="true">border: none;</string>
                       </property>
                       <property name="text">
-                       <string>Hour Worked</string>
+                       <string>Hour(s) Worked</string>
                       </property>
                      </widget>
                     </item>
@@ -1057,7 +1057,7 @@ padding: 2px;</string>
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                       </property>
                       <property name="placeholderText">
-                       <string>00.0</string>
+                       <string>00.00</string>
                       </property>
                      </widget>
                     </item>
@@ -1653,7 +1653,7 @@ font: 12pt &quot;assets/font/monda.ttf&quot;;
 padding: 2px;</string>
             </property>
             <property name="placeholderText">
-             <string>mm dd, yyyy - mm dd, yyyy</string>
+             <string/>
             </property>
            </widget>
           </item>
