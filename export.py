@@ -250,23 +250,22 @@ def generate_stub(company_name: str, employees: str, deductions: list, period: s
         ws.merge_cells(x[9]+y[13]+":"+x[9]+y[14])
 
         # Alignment and Number Format
-        left= True
-        right= skip= False
+        for col in range (2, col_per_stub):
+            ws[x[col]+y[6]].alignment= LC_HV
 
+        left= True; skip= False
         for col in range(2, col_per_stub):
-            if left == True and right == False and skip == False:
-                for row in range(8, row_per_stub):
+            if left == True and skip == False:
+                left= False; skip= False
+                for row in range(8, row_per_stub-1):
                     ws[x[col]+y[row]].alignment= LC_HV
-                    print("L > "+ x[col]+y[row])
-                left= False; right= True; skip= False
-            elif right == True and left == False and skip == False:
-                for row in range(8, row_per_stub):
+            elif left == False and skip == False:
+                left= True; skip= True
+                for row in range(8, row_per_stub-1):
                     ws[x[col]+y[row]].alignment= RC_HV
-                    print("R >"+ x[col]+y[row])
-                left= True; right= False; skip= True
-            elif right == True and left == False and skip == True:
-                left= True; right= False; skip= False
-
+            elif skip == True:
+                skip= False
+        
         ws[x[2]+y[13]].alignment= ws[x[3]+y[13]].alignment= CC_HV
 
         # Row width
