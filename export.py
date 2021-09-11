@@ -146,14 +146,17 @@ def generate_stub(company_name: str, employees: str, deductions: list, period: s
         ws[x[5]+y[13]]= "Gross Pay"
         ws[x[6]+y[13]]= convert(employee_data[16])
         ws[x[5]+y[13]].font= ws[x[6]+y[13]].font= ANB12
+        ws[x[6]+y[13]].number_format= '#,##0.00'
 
         ws[x[5]+y[14]]= "Total Deduction"
         ws[x[6]+y[14]]= convert(employee_data[17])
         ws[x[5]+y[14]].font= ws[x[6]+y[14]].font= ANB12
+        ws[x[6]+y[14]].number_format= '#,##0.00'
 
         ws[x[8]+y[13]]= "NET PAY"
         ws[x[9]+y[13]]= convert(employee_data[18])
         ws[x[8]+y[13]].font= ws[x[9]+y[13]].font= ANB12
+        ws[x[9]+y[13]].number_format= '#,##0.00'
         
         ws[x[2]+y[13]]= "Deduction"
         ws[x[2]+y[13]].font= ANB12
@@ -232,12 +235,13 @@ def generate_stub(company_name: str, employees: str, deductions: list, period: s
             ws[x[col]+y[7]].border= TN_B
             ws[x[col]+y[11]].border= TN_B
 
-        # Deduction Table
+        # Deduction Table and Number Format
         for col in range(2, 4):
             ws[x[col]+y[13]].border= TN_TRB
             ws[x[col]+y[20]].border= TN_RB
             for row in range(14, 20):
                 ws[x[col]+y[row]].border= TN_R
+                ws[x[3]+y[row]].number_format= '#,##0.00'
 
         # Signature Line
         ws.merge_cells(x[5]+y[19]+":"+x[6]+y[19])
@@ -249,7 +253,7 @@ def generate_stub(company_name: str, employees: str, deductions: list, period: s
         ws.merge_cells(x[8]+y[13]+":"+x[8]+y[14])
         ws.merge_cells(x[9]+y[13]+":"+x[9]+y[14])
 
-        # Alignment and Number Format
+        # Alignment
         for col in range (2, col_per_stub):
             ws[x[col]+y[6]].alignment= LC_HV
 
@@ -257,12 +261,14 @@ def generate_stub(company_name: str, employees: str, deductions: list, period: s
         for col in range(2, col_per_stub):
             if left == True and skip == False:
                 left= False; skip= False
-                for row in range(8, row_per_stub-1):
+                for row in range(8, 12):
                     ws[x[col]+y[row]].alignment= LC_HV
+                    ws[x[col]+y[row]].number_format= '#,##0.00'
             elif left == False and skip == False:
                 left= True; skip= True
-                for row in range(8, row_per_stub-1):
+                for row in range(8, 12):
                     ws[x[col]+y[row]].alignment= RC_HV
+                    ws[x[col]+y[row]].number_format= '#,##0.00'
             elif skip == True:
                 skip= False
         
