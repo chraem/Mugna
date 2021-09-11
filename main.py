@@ -133,8 +133,8 @@ class MainWindow(QMainWindow):
 
             # Get inputs from table widget
             for row in range(self.ui.deductions_TBL.rowCount()):
-                deduction = self.ui.deductions_TBL.item(row, 0).text()
-                amount = self.ui.deductions_TBL.item(row, 1).text()
+                deduction = set_item(self.ui.deductions_TBL.item(row, 0), "deduction", row)
+                amount = set_item(self.ui.deductions_TBL.item(row, 1), "amount", 0)
                 deductions_DICT[deduction] = amount
 
             if (c.execute("""
@@ -219,7 +219,6 @@ class MainWindow(QMainWindow):
 
         try:
             if choice == QMessageBox.Yes:
-                print(emp_ID, curr_row)
                 self.ui.report_TBL.removeRow(self.ui.report_TBL.currentRow())
                 if c.execute("DELETE FROM employees WHERE id ={}".format(emp_ID)):
                     conn.commit()
@@ -313,13 +312,9 @@ class MainWindow(QMainWindow):
         num_of_row, deductions = self.ui.deductions_TBL.rowCount(), 0.0
 
         for row in range(num_of_row):
-            deduction_name = self.ui.deductions_TBL.item(row, 0)
-            pre_amount = self.ui.deductions_TBL.item(row, 1)
+            deduction= set_item(self.ui.deductions_TBL.item(row, 0), "name", row)
 
-            deduction = self.ui.deductions_TBL.item(row, 0).text() if deduction_name != None and deduction_name.text() != "" else "Deduction"+str(row)
-            amount =  set_item(self.ui.deductions_TBL.item(row, 1))
-
-            deductions_DICT[deduction] = amount
+            deductions_DICT[deduction] = set_item(self.ui.deductions_TBL.item(row, 1), "amount", 0)
             deductions += float(deductions_DICT[deduction])
 
         self.ui.total_deduction_LE.setText(str(deductions))
@@ -371,7 +366,7 @@ def validate(widget: str, data_type: str):
     elif data_type == "float":
         widget.setValidator(QRegExpValidator(QRegExp("([\\d]+\\.?\\d{0,2})"), widget))
     elif data_type == "name":
-        widget.setValidator(QRegExpValidator(QRegExp("[-\\w\\s'.]+"), widget))
+        widget.setValidator(QRegExpValidator(QRegExp("[-'a-zA-Z\\s]+"), widget))
     elif data_type == "date":
         widget.setValidator(QRegExpValidator(QRegExp("[-\\w\\s\\d'.,/]+"), widget))
 
@@ -392,11 +387,18 @@ def set_value(widget):
 def quantise(data: float):
     return Decimal(data).quantize(Decimal('0.01'))
 
-def set_item(item):
+def set_item(item, item_type: str, row: int):
     if item == None or item.text() == "":
-        return 0.0
+        if item_type == "amount":
+            return 0.0 
+        else:
+            return "Deduction_"+str(row+1)
     else:
-        return quantise(item.text())
+        if item_type == "amount":
+            return quantise(item.text()) 
+        else:
+            return item.text()
+        
 
 def open_file_explorer(filename: str):
     try:
