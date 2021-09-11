@@ -133,8 +133,18 @@ class MainWindow(QMainWindow):
 
             # Get inputs from table widget
             for row in range(self.ui.deductions_TBL.rowCount()):
-                deduction = set_item(self.ui.deductions_TBL.item(row, 0), "deduction", row)
-                amount = set_item(self.ui.deductions_TBL.item(row, 1), "amount", 0)
+                deduction_OBJ = self.ui.deductions_TBL.item(row, 0)
+                amount_OBJ = self.ui.deductions_TBL.item(row, 1)
+
+                if deduction_OBJ == None or deduction_OBJ.text() == "":
+                    deduction = "Deduction_"+str(row)
+                else:
+                    deduction = deduction_OBJ.text()
+                if amount_OBJ == None or amount_OBJ.text() == "":
+                    amount = 0.0
+                else:
+                    amount = amount_OBJ.text()
+                
                 deductions_DICT[deduction] = amount
 
             if (c.execute("""
@@ -366,7 +376,7 @@ def validate(widget: str, data_type: str):
     elif data_type == "float":
         widget.setValidator(QRegExpValidator(QRegExp("([\\d]+\\.?\\d{0,2})"), widget))
     elif data_type == "name":
-        widget.setValidator(QRegExpValidator(QRegExp("[-'a-zA-Z\\s]+"), widget))
+        widget.setValidator(QRegExpValidator(QRegExp("[-'.a-zA-Z\\s]+"), widget))
     elif data_type == "date":
         widget.setValidator(QRegExpValidator(QRegExp("[-\\w\\s\\d'.,/]+"), widget))
 
@@ -412,12 +422,13 @@ def open_file_explorer(filename: str):
             + (path.normpath(getcwd()+"/mugna/exports")))
 
 def close_db():
+    c.execute("DELETE FROM employees")
+    c.execute("DELETE FROM deductions")
+    conn.commit()
     conn.close()
 
 conn = sqlite3.connect("mugna/database/stub.sqlite")
 c = conn.cursor()
-c.execute("DELETE FROM employees")
-c.execute("DELETE FROM deductions")
 
 # App initialization
 app = QApplication(sys.argv)
