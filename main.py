@@ -44,6 +44,13 @@ class MainWindow(QMainWindow):
 
         validate(self.ui.period_LE, "date")
 
+        line_edit_tabOrder(self, self.ui.company_name_LE, self.ui.id_emp_LE, self.ui.fn_emp_LE,
+                           self.ui.mn_emp_LE, self.ui.ln_emp_LE, self.ui.day_rate_LE,
+                           self.ui.day_worked_LE, self.ui.night_rate_LE, self.ui.night_worked_LE, 
+                           self.ui.holiday_rate_LE, self.ui.holiday_worked_LE, self.ui.ot_rate_LE,
+                           self.ui.ot_hours_LE, self.ui.prepared_by_LE, self.ui.period_LE
+                          )
+
         self.ui.deductions_TBL.setItemDelegateForColumn(1, amount_delegate())
         
         self.stacked_widget_page(0)
@@ -426,6 +433,12 @@ def close_db():
     c.execute("DELETE FROM deductions")
     conn.commit()
     conn.close()
+
+def line_edit_tabOrder(*line_edit: tuple):
+    for i in range(len(line_edit) ):
+        if i == len(line_edit)-1:
+            break
+        line_edit[0].setTabOrder(line_edit[i], line_edit[i+1])
 
 conn = sqlite3.connect("mugna/database/stub.sqlite")
 c = conn.cursor()
