@@ -665,7 +665,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(5, 55, 66);\n"
 "	border-radius: 12px;\n"
 "	color: rgb(255, 255, 255);\n"
-"	image: url(:/images/subraction.png);\n"
+"	image: url(:/images/subtraction.png);\n"
 "	padding: 3px;\n"
 "}\n"
 "\n"
