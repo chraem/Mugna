@@ -440,7 +440,7 @@ def line_edit_tabOrder(*line_edit: tuple):
             break
         line_edit[0].setTabOrder(line_edit[i], line_edit[i+1])
 
-conn = sqlite3.connect("stub.sqlite")
+conn = sqlite3.connect("mugna/assets/stub.sqlite")
 c = conn.cursor()
 
 # App initialization
