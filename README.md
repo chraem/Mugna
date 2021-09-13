@@ -16,7 +16,7 @@ Done, but definitely have a lot of rooms to improve.
 See the dependencies [here](https://github.com/chraem/Mugna/blob/main/Pipfile).
 
 ## Features
-1. Real time Computation of net pay, total deduction, and gross pay.
+1. Real-time computation of net pay, total deduction, and gross pay.
 ![demo1](https://user-images.githubusercontent.com/80801050/133085156-a2cbfac7-3e6f-495e-9ffe-d34d50fad136.gif)
 2. Multiple addition of employees' information.
 3. Up to 7 deductions per employee.
