@@ -8,22 +8,20 @@ This is a just-for-fun, and just-for-practice kind of task.
 Done, but definitely have a lot of rooms to improve.
 
 ## Screenshots
-![main window](https://user-images.githubusercontent.com/80801050/133072606-3012f83b-e93a-4963-9310-2cae17627e99.png)
-![summary report](https://user-images.githubusercontent.com/80801050/133075299-a75feb21-27e9-467a-b23c-b3dfe910cf00.png)
-![generated excel](https://user-images.githubusercontent.com/80801050/133072672-9ab39bea-8076-4b91-b508-7d2900d78e95.png)
+<img width="500" height="300" src="https://user-images.githubusercontent.com/80801050/133080288-d6bc3a6e-8f3d-474a-a04b-804d7eaa3d25.png">
+<img width="500" height="300" src="https://user-images.githubusercontent.com/80801050/133080963-b02c4e87-ed9f-4e80-9b7a-59f7adb83843.png">
+<img width="1200" height="300" src="https://user-images.githubusercontent.com/80801050/133080690-44fe0770-6f24-4e34-a72b-d652d14441c4.png">
 
 ## Dependencies
 See the dependencies [here](https://github.com/chraem/Mugna/blob/main/Pipfile).
 
 ## Features
-1. Automatic Computation of net pay, total deduction, and gross pay.
+1. Real time Computation of net pay, total deduction, and gross pay.
+![demo1](https://user-images.githubusercontent.com/80801050/133079627-79e084a2-8b27-4fb6-b640-2887b7dac713.gif)
 2. Multiple addition of employees' information.
 3. Up to 7 deductions per employee.
 4. Clear line edits in one click.
 5. Creation of summary report.
-![5](https://user-images.githubusercontent.com/80801050/133075583-373f0223-324f-4fb9-a708-ff6d60b7988c.png)
 6. Deletion of employees' information.
-![6](https://user-images.githubusercontent.com/80801050/133075502-6482e3a7-367d-49f5-bd1f-2168f003d43a.png)
 7. Generate excel file.
-![8](https://user-images.githubusercontent.com/80801050/133075344-cf25432e-f0d0-4183-9ef9-a378cdbd79aa.png)
-- Check [this](https://github.com/chraem/Mugna/blob/main/demo/demo.pdf) to see the sample generated excel.
+    - Check the sample [here](https://github.com/chraem/Mugna/blob/main/demo/demo.pdf).
