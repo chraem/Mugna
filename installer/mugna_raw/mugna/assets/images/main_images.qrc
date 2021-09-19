@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="images">
+    <file>cat.png</file>
+    <file>addition.png</file>
+    <file>subtraction.png</file>
+  </qresource>
+</RCC>
