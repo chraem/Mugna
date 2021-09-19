@@ -8,9 +8,7 @@ This is a just-for-fun, and just-for-practice kind of task.
 Done, but definitely have a lot of rooms to improve.
 
 ## Screenshots
-<img width="500" height="300" src="https://user-images.githubusercontent.com/80801050/133080288-d6bc3a6e-8f3d-474a-a04b-804d7eaa3d25.png">
-<img width="500" height="300" src="https://user-images.githubusercontent.com/80801050/133080963-b02c4e87-ed9f-4e80-9b7a-59f7adb83843.png">
-<img width="1200" height="300" src="https://user-images.githubusercontent.com/80801050/133080690-44fe0770-6f24-4e34-a72b-d652d14441c4.png">
+See screenshots [here](https://github.com/chraem/Mugna/tree/main/demo/snippets).
 
 ## Dependencies
 See the dependencies [here](https://github.com/chraem/Mugna/blob/main/Pipfile).
