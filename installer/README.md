@@ -1,25 +1,31 @@
 # Creating Your Own Installer With auto-py-to-exe
 1. Install `auto-py-to-exe`.
+
 `pipenv install auto-py-to-exe`
+
 2. Run auto-py-to-exe.
 `pipenv run auto-py-to-exe`
 > This will prompt a UI to help you convert the `main.py` into executable file much easier.
+
 3. Fill the form based on your preference or you may as well do what I did
 | Scipt Location: | path/to/mugna_raw/main.py |
 | (--onedir / --onefile) | One Directory |
 | (--console / --windowed) | Window Based |
 | Icon | path/to/mugna_raw/cat.ico |
 | General Options --name | mugna_setup |
-4. Convert `.py` to `.exe`.
-5. Open the mugna_setup folder and check the executable file.
-> You will be prompted with error because the executable file can't access some of the imports. To solve this proceed to step 6.
-6. From mugna_raw directory, copy mugna directory to mugna_setup.
-7. You may now run the executable file.
 
-> If you want to keep things more organized, try [inno setup](https://jrsoftware.org/isdl.php).
+4. Convert `.py` to `.exe`.
+
+6. Open the mugna_setup folder.
+
+8. From mugna_raw directory, copy the mugna folder inside mugna_setup.
+
+10. You may now run the executable file.
+
+ > If you want to keep things more organized, try [inno setup](https://jrsoftware.org/isdl.php).
 
 # Provided Installer
-To cut the hassle of creating your own installer you may download the installer [here]().
+To cut the hassle of creating your own installer you may download the installer [here](https://github.com/chraem/Mugna/blob/main/installer/Mugna%20Setup.exe).
 
 # Trigerring Anti-Virus 
 You may want to read this:
