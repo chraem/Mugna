@@ -8,10 +8,13 @@ This is a just-for-fun, and just-for-practice kind of task.
 Done, but definitely have a lot of rooms to improve.
 
 ## Screenshots
-See screenshots [here](https://github.com/chraem/Mugna/tree/main/demo/snippets).
+See the screenshots [here](https://github.com/chraem/Mugna/tree/main/demo/snippets).
 
 ## Dependencies
 See the dependencies [here](https://github.com/chraem/Mugna/blob/main/Pipfile).
+
+## Program Installation
+See the installation instructions [here](https://github.com/chraem/Mugna/tree/main/installer).
 
 ## Features
 1. Real-time computation of net pay, total deduction, and gross pay.
