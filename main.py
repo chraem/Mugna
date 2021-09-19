@@ -16,6 +16,7 @@ from mugna.assets import main_images_rc, ui_mainWindow
 from export import generate_stub, save_wb
 
 deductions_DICT, visible = {}, False
+total_deductions = 0.0 
 
 class MainWindow(QMainWindow):
     """
@@ -104,12 +105,13 @@ class MainWindow(QMainWindow):
             throw.clear()
 
         self.ui.deductions_TBL.setRowCount(0)
+        deductions_DICT = 0.0
 
     def add_data(self):
         """
         Reads all the data inputted in line edits and commits them on database.
         """
-        global deductions_DICT
+        global deductions_DICT, total_deductions
 
         try:
             employee_data ={
@@ -181,6 +183,7 @@ class MainWindow(QMainWindow):
                             """, (employee_data["id"], deduction, deductions_DICT[deduction],)
                 )):
                     conn.commit()
+                    total_deductions = 0.0
 
             self.ui.notification_LBL.setText("Added successfully.")
             self.ui.notification_LBL.setVisible(True)
@@ -222,6 +225,7 @@ class MainWindow(QMainWindow):
 
     def remove_specific_row(self):
         self.ui.deductions_TBL.removeRow(self.ui.deductions_TBL.currentRow())
+        self.reload_total_deduction()
 
     def delete_data(self):
         curr_row= self.ui.report_TBL.currentRow()
@@ -325,16 +329,17 @@ class MainWindow(QMainWindow):
         """
         Updates the line edit for total deduction each time the deductions table changed.
         """
-        global deductions_DICT
-        num_of_row, deductions = self.ui.deductions_TBL.rowCount(), 0.0
+        global deductions_DICT, total_deductions
+        total_deductions = 0.0
+        num_of_row = self.ui.deductions_TBL.rowCount()
 
         for row in range(num_of_row):
             deduction= set_item(self.ui.deductions_TBL.item(row, 0), "name", row)
 
             deductions_DICT[deduction] = set_item(self.ui.deductions_TBL.item(row, 1), "amount", 0)
-            deductions += float(deductions_DICT[deduction])
+            total_deductions += float(deductions_DICT[deduction])
 
-        self.ui.total_deduction_LE.setText(str(deductions))
+        self.ui.total_deduction_LE.setText(str(total_deductions))
 
     def export_data(self):
         """
@@ -401,7 +406,7 @@ def set_value(widget):
     else:
         return quantise(widget.text())
 
-def quantise(data: float):
+def quantise(data: str):
     return Decimal(data).quantize(Decimal('0.01'))
 
 def set_item(item, item_type: str, row: int):
