@@ -7,7 +7,10 @@
 `pipenv run auto-py-to-exe`
 > This will prompt a UI to help you convert the `main.py` into executable file much easier.
 
-3. Fill the form based on your preference or you may as well do what I did
+3. Fill the form based on your preference or you may as well do what I did.
+
+| Action | Input |
+| ------- | ------- |
 | Scipt Location: | path/to/mugna_raw/main.py |
 | (--onedir / --onefile) | One Directory |
 | (--console / --windowed) | Window Based |
@@ -25,7 +28,7 @@
  > If you want to keep things more organized, try [inno setup](https://jrsoftware.org/isdl.php).
 
 # Provided Installer
-To cut the hassle of creating your own installer you may download the installer [here](https://github.com/chraem/Mugna/blob/main/installer/Mugna%20Setup.exe).
+To cut the hassle I provided the installer [here](https://github.com/chraem/Mugna/blob/main/installer/Mugna%20Setup.exe).
 
 # Trigerring Anti-Virus 
 You may want to read this:
